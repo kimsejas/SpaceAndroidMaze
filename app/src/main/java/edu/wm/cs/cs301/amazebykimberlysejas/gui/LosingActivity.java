@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import edu.wm.cs.cs301.amazebykimberlysejas.R;
 
-public class GeneratingActivity extends AppCompatActivity {
+public class LosingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_generating);
+        setContentView(R.layout.activity_losing);
     }
 }
