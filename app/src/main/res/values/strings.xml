@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">AMazeByKimberlySejas</string>
+    <string name="explore">explore</string>
+    <string name="revisit">revisit</string>
+
+    <string-array name="algos">
+        <item>DFS</item>
+        <item>PRIM</item>
+        <item>BORUVKA</item>
+
+    </string-array>
+
+    <string name="pSizeBarText">Planet Size</string>
+    <string name="chooseRover">Choose your rover</string>
+    <string name="wizard">Wizard</string>
+    <string name="wallfollower">Wallfollower</string>
+    <string name="manual">Manual</string>
+    <string name="craters">Craters</string>
+
+
 </resources>

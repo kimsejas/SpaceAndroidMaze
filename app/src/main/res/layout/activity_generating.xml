@@ -6,4 +6,75 @@
     android:layout_height="match_parent"
     tools:context=".gui.GeneratingActivity">
 
+<!--    <ProgressBar-->
+<!--        android:id="@+id/mazeProgressBar"-->
+<!--        style="?android:attr/progressBarStyleHorizontal"-->
+<!--        android:layout_width="329dp"-->
+<!--        android:layout_height="62dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.088" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/mazeProgressBarText"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Heading To Planet..."-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.498"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.047" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/textView2"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/chooseRover"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.498"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.273" />-->
+
+<!--    <RadioGroup-->
+<!--        android:id = "@+id/radioGroup"-->
+<!--        android:layout_width="131dp"-->
+<!--        android:layout_height="146dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.417">-->
+
+<!--        <RadioButton-->
+<!--            android:id="@+id/wizardB"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Wizard"-->
+<!--            android:checked = "false"-->
+<!--            android:onClick="checkButton"/>-->
+
+<!--        <RadioButton-->
+<!--            android:id="@+id/wallfollowerB"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Wallfollower"-->
+<!--            android:checked = "false"-->
+<!--            android:onClick="checkButton"/>-->
+
+<!--        <RadioButton-->
+<!--            android:id="@+id/manaulB"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Manual"-->
+<!--            android:checked = "false"-->
+<!--            android:onClick="checkButton"/>-->
+<!--    </RadioGroup>-->
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
