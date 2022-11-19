@@ -12,10 +12,17 @@
 
     <string name="pSizeBarText">Planet Size</string>
     <string name="chooseRover">Choose your rover</string>
+
     <string name="wizard">Wizard</string>
     <string name="wallfollower">Wallfollower</string>
     <string name="manual">Manual</string>
+
     <string name="craters">Craters</string>
+
+    <string name="shaky"> Shaky</string>
+    <string name="soso"> Soso</string>
+    <string name="mediocre"> Mediocre</string>
+    <string name="premium"> Premium</string>
 
 
 </resources>

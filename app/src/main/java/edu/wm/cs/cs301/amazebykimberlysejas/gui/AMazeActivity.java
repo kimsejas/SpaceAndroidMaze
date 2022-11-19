@@ -52,7 +52,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         explore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(AMazeActivity.this, "Explore button clicked!", Toast.LENGTH_LONG).show();
+                Toast.makeText(AMazeActivity.this, "Explore button clicked!", Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User clicked explore button");
                 Intent i = new Intent(AMazeActivity.this, GeneratingActivity.class);
                 startActivity(i);
@@ -69,7 +69,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         revisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(AMazeActivity.this, "Revisit button clicked!", Toast.LENGTH_LONG).show();
+                Toast.makeText(AMazeActivity.this, "Revisit button clicked!", Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User clicked revisit button");
                 Intent i = new Intent(AMazeActivity.this, GeneratingActivity.class);
                 startActivity(i);

@@ -6,75 +6,133 @@
     android:layout_height="match_parent"
     tools:context=".gui.GeneratingActivity">
 
-<!--    <ProgressBar-->
-<!--        android:id="@+id/mazeProgressBar"-->
-<!--        style="?android:attr/progressBarStyleHorizontal"-->
-<!--        android:layout_width="329dp"-->
-<!--        android:layout_height="62dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.088" />-->
+    <ProgressBar
+        android:id="@+id/mazeProgressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="329dp"
+        android:layout_height="62dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.088" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/mazeProgressBarText"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Heading To Planet..."-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.498"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.047" />-->
+    <TextView
+        android:id="@+id/mazeProgressBarText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Heading To Planet..."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.047" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/textView2"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="@string/chooseRover"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.498"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.273" />-->
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/chooseRover"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.227" />
 
-<!--    <RadioGroup-->
-<!--        android:id = "@+id/radioGroup"-->
-<!--        android:layout_width="131dp"-->
-<!--        android:layout_height="146dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.417">-->
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="131dp"
+        android:layout_height="146dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.363">
 
-<!--        <RadioButton-->
-<!--            android:id="@+id/wizardB"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Wizard"-->
-<!--            android:checked = "false"-->
-<!--            android:onClick="checkButton"/>-->
+        <RadioButton
+            android:id="@+id/wizardB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:onClick="checkButton"
+            android:text="Wizard" />
 
-<!--        <RadioButton-->
-<!--            android:id="@+id/wallfollowerB"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Wallfollower"-->
-<!--            android:checked = "false"-->
-<!--            android:onClick="checkButton"/>-->
+        <RadioButton
+            android:id="@+id/wallfollowerB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:onClick="checkButton"
+            android:text="Wallfollower" />
 
-<!--        <RadioButton-->
-<!--            android:id="@+id/manaulB"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Manual"-->
-<!--            android:checked = "false"-->
-<!--            android:onClick="checkButton"/>-->
-<!--    </RadioGroup>-->
+        <RadioButton
+            android:id="@+id/manaulB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:onClick="checkButton"
+            android:text="Manual" />
+    </RadioGroup>
+
+
+
+    <TextView
+        android:id="@+id/conditionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose rover condition"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.573" />
+
+    <RadioGroup
+        android:id="@+id/conditionGroup"
+        android:layout_width="168dp"
+        android:layout_height="198dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.911">
+
+        <RadioButton
+            android:id="@+id/premiumB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/premium"
+            android:onClick="checkConditionButton"/>
+
+        <RadioButton
+            android:id="@+id/mediocreB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/mediocre"
+            android:onClick="checkConditionButton"/>
+
+        <RadioButton
+            android:id="@+id/sosoB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/soso"
+            android:onClick="checkConditionButton"/>
+
+        <RadioButton
+            android:id="@+id/shakyB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/shaky"
+            android:onClick="checkConditionButton"/>
+    </RadioGroup>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
