@@ -89,34 +89,34 @@ public class MazePanel extends androidx.appcompat.widget.AppCompatImageView {
     Gray rectangle on top,black rectangle on bottom, two polygons to represent walls
      */
     public void drawAnimationTestImage(){
-//        Paint black = new Paint();
-//        black.setColor(Color.BLACK);
-//        Paint gray = new Paint();
-//        gray.setColor(Color.GRAY);
-//        canvas.drawRect(0, 400, 800, 800, black);
-//        canvas.drawRect(0, 0, 800, 532, gray);
-//
-//        Paint yellow = new Paint();
-//        yellow.setColor(Color.YELLOW);
-//        Path leftWallPath = new Path();
-//        leftWallPath.moveTo(0,0);
-//        leftWallPath.lineTo(200, 266);
-//        leftWallPath.lineTo(200,532);
-//        leftWallPath.lineTo(0,800);
-//        leftWallPath.lineTo(0,0);
-//        leftWallPath.close();
-//        canvas.drawPath(leftWallPath, yellow);
-//
-//        Paint green = new Paint();
-//        green.setColor(Color.GREEN);
-//        Path rightWallPath = new Path();
-//        rightWallPath.moveTo(800,0);
-//        rightWallPath.lineTo(600, 266);
-//        rightWallPath.lineTo(600,532);
-//        rightWallPath.lineTo(800,800);
-//        rightWallPath.lineTo(800,0);
-//        rightWallPath.close();
-//        canvas.drawPath(rightWallPath, green);
+        Paint black = new Paint();
+        black.setColor(Color.BLACK);
+        Paint gray = new Paint();
+        gray.setColor(Color.GRAY);
+        canvas.drawRect(0, 400, 800, 800, black);
+        canvas.drawRect(0, 0, 800, 532, gray);
+
+        Paint yellow = new Paint();
+        yellow.setColor(Color.YELLOW);
+        Path leftWallPath = new Path();
+        leftWallPath.moveTo(0,0);
+        leftWallPath.lineTo(200, 266);
+        leftWallPath.lineTo(200,532);
+        leftWallPath.lineTo(0,800);
+        leftWallPath.lineTo(0,0);
+        leftWallPath.close();
+        canvas.drawPath(leftWallPath, yellow);
+
+        Paint green = new Paint();
+        green.setColor(Color.GREEN);
+        Path rightWallPath = new Path();
+        rightWallPath.moveTo(800,0);
+        rightWallPath.lineTo(600, 266);
+        rightWallPath.lineTo(600,532);
+        rightWallPath.lineTo(800,800);
+        rightWallPath.lineTo(800,0);
+        rightWallPath.close();
+        canvas.drawPath(rightWallPath, green);
 
 
     }
