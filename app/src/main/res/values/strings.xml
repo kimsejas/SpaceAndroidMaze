@@ -23,6 +23,19 @@
     <string name="soso"> Soso</string>
     <string name="mediocre"> Mediocre</string>
     <string name="premium"> Premium</string>
+    <string name="to_losing">To losing</string>
+    <string name="to_winning">To winning</string>
+    <string name="remaining_energy">Remaining Energy</string>
+    <string name="zoom">ZOOM</string>
+    <string name="sensors">SENSORS</string>
+    <string name="sensorsText">SENSORS</string>
+    <string name="fast">Fast</string>
+    <string name="slow">Slow</string>
+    <string name="speed">Speed</string>
+    <string name="togglebutton">ToggleButton</string>
+    <string name="off">OFF</string>
+    <string name="on">ON</string>
+    <string name="heading_to_planet">Heading To Planet...</string>
 
 
 </resources>

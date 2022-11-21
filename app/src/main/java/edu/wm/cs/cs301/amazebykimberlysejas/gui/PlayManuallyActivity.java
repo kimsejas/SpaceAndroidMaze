@@ -3,11 +3,17 @@ package edu.wm.cs.cs301.amazebykimberlysejas.gui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -17,8 +23,6 @@ public class PlayManuallyActivity extends AppCompatActivity {
     private ToggleButton fullMaze;
     private ToggleButton showSolution;
     private ToggleButton walls;
-
-    private Button shortcut;
 
     private int pathLength = 0;
 
@@ -38,6 +42,8 @@ public class PlayManuallyActivity extends AppCompatActivity {
         jump();
         rotateLeft();
         rotateRight();
+        createGameScreenBitmap();
+
 
     }
 
@@ -124,7 +130,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
     Switches to WinningActivity when user clicks on shortcut button
      */
     private void shortcutClicked(){
-        shortcut = findViewById(R.id.shortcutB);
+        Button shortcut = findViewById(R.id.shortcutB);
         shortcut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,7 +152,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
             public void onClick(View view) {
                 pathLength+=1;
                 Toast.makeText(PlayManuallyActivity.this, "Moved up!", Toast.LENGTH_SHORT).show();
-                Log.v("buttonClicked", "User clicked arrow up button, moved forward");
+                Log.v("buttonClicked", "User clicked arrow up button, moved forwardPath length is: " + pathLength);
             }
         });
     }
@@ -161,7 +167,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
             public void onClick(View view) {
                 pathLength+=1;
                 Toast.makeText(PlayManuallyActivity.this, "Jumped!", Toast.LENGTH_SHORT).show();
-                Log.v("buttonClicked", "User clicked jumped button");
+                Log.v("buttonClicked", "User clicked jumped button. Path length is: "+ pathLength);
             }
         });
     }
@@ -193,6 +199,16 @@ public class PlayManuallyActivity extends AppCompatActivity {
                 Log.v("buttonClicked", "User clicked right arrow button, rotated right");
             }
         });
+
+    }
+
+
+    /*
+    Draws the game screen by using a custom view maze panel
+     */
+    private void createGameScreenBitmap(){
+        MazePanel gameScreen = (MazePanel) findViewById(R.id.gameScreen);
+        gameScreen.drawManualTestImage();
 
     }
 
