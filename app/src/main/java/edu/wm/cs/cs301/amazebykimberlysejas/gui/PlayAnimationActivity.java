@@ -163,6 +163,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
                 Toast.makeText(PlayAnimationActivity.this, "To winning button clicked!", Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User clicked to winning button, switch to winning");
                 Intent i = new Intent(PlayAnimationActivity.this, WinningActivity.class);
+                i.putExtra("From", "Animation");
                 startActivity(i);
             }
         });

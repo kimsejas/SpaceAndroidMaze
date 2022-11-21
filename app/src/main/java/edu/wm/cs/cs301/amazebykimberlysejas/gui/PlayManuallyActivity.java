@@ -137,6 +137,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
                 Toast.makeText(PlayManuallyActivity.this, "Shortcut button clicked!", Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User clicked shortcut button, switch to winning");
                 Intent i = new Intent(PlayManuallyActivity.this, WinningActivity.class);
+                i.putExtra("From", "Manual");
                 startActivity(i);
             }
         });
