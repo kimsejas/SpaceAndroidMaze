@@ -22,6 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/heading_to_planet"
+        android:textSize="20sp"
+        android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -29,66 +31,74 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.047" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/chooseRover"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.227" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
-        android:layout_width="131dp"
-        android:layout_height="146dp"
+        android:layout_width="135dp"
+        android:layout_height="206dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.427"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.363">
+        app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
             android:id="@+id/wizardB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:checked="false"
             android:onClick="checkButton"
-            android:text="Wizard" />
+            android:text="@string/wizard"
+            android:typeface="monospace" />
 
         <RadioButton
             android:id="@+id/wallfollowerB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:checked="false"
             android:onClick="checkButton"
-            android:text="Wallfollower" />
+            android:text="@string/wallfollower"
+            android:typeface="monospace" />
 
         <RadioButton
-            android:id="@+id/manaulB"
-            android:layout_width="match_parent"
+            android:id="@+id/manualB"
+            android:layout_width="190dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:checked="false"
             android:onClick="checkButton"
-            android:text="Manual" />
+            android:text="@string/manual"
+            android:typeface="monospace" />
     </RadioGroup>
 
-
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/chooseRover"
+        android:textSize="20sp"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.343" />
 
     <TextView
         android:id="@+id/conditionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose rover condition"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/choose_rover_condition"
+        android:textSize="20sp"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toTopOf="@+id/conditionGroup"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.573" />
+        app:layout_constraintVertical_bias="0.984" />
 
     <RadioGroup
         android:id="@+id/conditionGroup"
@@ -107,6 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/premium"
+            android:typeface="monospace"
             android:onClick="checkConditionButton"/>
 
         <RadioButton
@@ -114,6 +125,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:typeface="monospace"
             android:text="@string/mediocre"
             android:onClick="checkConditionButton"/>
 
@@ -122,6 +134,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:typeface="monospace"
             android:text="@string/soso"
             android:onClick="checkConditionButton"/>
 
@@ -130,9 +143,60 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:typeface="monospace"
             android:text="@string/shaky"
             android:onClick="checkConditionButton"/>
+
     </RadioGroup>
+
+
+    <ImageView
+        android:id="@+id/wizardImg"
+        android:layout_width="88dp"
+        android:layout_height="69dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.783"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499"
+        app:srcCompat="@drawable/wizard" />
+
+    <ImageView
+        android:id="@+id/wf"
+        android:layout_width="88dp"
+        android:layout_height="69dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.783"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.404"
+        app:srcCompat="@drawable/wallfollower" />
+
+    <ImageView
+        android:id="@+id/manualImg"
+        android:layout_width="88dp"
+        android:layout_height="69dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.783"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.595"
+        app:srcCompat="@drawable/manual" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="204dp"
+        android:layout_height="116dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.868"
+        app:srcCompat="@drawable/planet1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

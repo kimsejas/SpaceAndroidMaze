@@ -188,6 +188,10 @@ public class PlayAnimationActivity extends AppCompatActivity {
 
     }
 
+
+    /*
+    Allows for the user to adjust speed of animation and updates text that displays current speed
+     */
     private void speedBarSlider(){
         speedBarText = (TextView) findViewById(R.id.speedBarText);
         speedBar = (SeekBar) findViewById(R.id.speedBar);

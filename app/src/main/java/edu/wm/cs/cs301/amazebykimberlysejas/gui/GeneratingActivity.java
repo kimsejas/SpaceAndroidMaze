@@ -25,10 +25,8 @@ public class GeneratingActivity extends AppCompatActivity {
     private Handler mHandler = new Handler();
 
     public RadioGroup roverTypeGroup;
-    private RadioButton roverTypeButton;
 
     private RadioGroup conditionGroup;
-    private RadioButton conditionButton;
 
     private Boolean threadFinished = false;
     private Boolean playManuallySelected = false;
@@ -73,7 +71,7 @@ public class GeneratingActivity extends AppCompatActivity {
             public void run() {
                 while (curProgress <= 100) {
                     curProgress += 1;
-                    android.os.SystemClock.sleep(100);
+                    android.os.SystemClock.sleep(200);
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -124,7 +122,7 @@ public class GeneratingActivity extends AppCompatActivity {
      */
     public void checkButton(View v) {
         int radioId = roverTypeGroup.getCheckedRadioButtonId();
-        roverTypeButton = findViewById(radioId);
+        RadioButton roverTypeButton = findViewById(radioId);
         Toast.makeText(GeneratingActivity.this, "Selected Rover Type: " + roverTypeButton.getText(), Toast.LENGTH_SHORT).show();
         Log.v("buttonSelected", "User selected " + roverTypeButton.getText() + " rover type");
 
@@ -133,7 +131,7 @@ public class GeneratingActivity extends AppCompatActivity {
             playManuallySelected = false;
 
         }
-        else if(roverTypeButton.getId() == R.id.manaulB){
+        else if(roverTypeButton.getId() == R.id.manualB){
             playManuallySelected = true;
             playAnimationSelected = false;
         }
@@ -163,7 +161,7 @@ public class GeneratingActivity extends AppCompatActivity {
      */
     public void checkConditionButton(View v){
         int radioId = conditionGroup.getCheckedRadioButtonId();
-        conditionButton = findViewById(radioId);
+        RadioButton conditionButton = findViewById(radioId);
 
         Toast.makeText(GeneratingActivity.this, "Selected Rover Condition: " + conditionButton.getText(), Toast.LENGTH_SHORT).show();
         Log.v("buttonSelected", "User selected " + conditionButton.getText() + " rover condition");

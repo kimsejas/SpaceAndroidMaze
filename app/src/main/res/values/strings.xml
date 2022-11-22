@@ -36,6 +36,10 @@
     <string name="off">OFF</string>
     <string name="on">ON</string>
     <string name="heading_to_planet">Heading To Planet...</string>
+    <string name="wf">WALLFOLLOWER</string>
+    <string name="wizard2">WIZARD</string>
+    <string name="manual2">MANUAL</string>
+    <string name="choose_rover_condition">Choose rover condition</string>
 
 
 </resources>
