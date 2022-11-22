@@ -31,6 +31,10 @@ public class WinningActivity extends AppCompatActivity {
     }
 
 
+
+    /*
+    Customizes the text views related to path length to gameplay
+     */
     private void pathLengthDisplayed(){
         Intent i = getIntent();
         String prev = i.getStringExtra("From");
@@ -49,6 +53,9 @@ public class WinningActivity extends AppCompatActivity {
 
     }
 
+    /*
+      Customizes the text views related to energy consumption to gameplay
+   */
     private void energyDisplayed(){
         energyConsumed =  (TextView) findViewById(R.id.energyConsumed);
         Intent i = getIntent();

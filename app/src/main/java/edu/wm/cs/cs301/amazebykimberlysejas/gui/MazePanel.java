@@ -17,10 +17,6 @@ public class MazePanel extends androidx.appcompat.widget.AppCompatImageView {
     private Canvas canvas;
 
 
-
-
-
-
     public MazePanel(Context context) {
         super(context);
         init();

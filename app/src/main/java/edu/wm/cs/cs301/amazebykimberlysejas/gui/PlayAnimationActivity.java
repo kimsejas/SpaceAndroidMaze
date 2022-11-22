@@ -181,6 +181,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
                 Toast.makeText(PlayAnimationActivity.this, "To losing button clicked!", Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User clicked to losing button, switch to losing");
                 Intent i = new Intent(PlayAnimationActivity.this, LosingActivity.class);
+                i.putExtra("From", "Animation");
                 startActivity(i);
             }
         });
