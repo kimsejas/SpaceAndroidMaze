@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">AMazeByKimberlySejas</string>
     <string name="explore">explore</string>
-    <string name="revisit">revisit</string>
+    <string name="revisit">revisit </string>
 
     <string-array name="algos">
         <item>DFS</item>

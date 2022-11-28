@@ -3,12 +3,15 @@ package edu.wm.cs.cs301.amazebykimberlysejas.gui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -24,28 +27,32 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
     private Button revisit;
     private Spinner spinner;
 
-    private TextView skillBarText;
-    private SeekBar skillBar;
-    public int skillBarNum;
+    private TextView planetSizeText;
+    private SeekBar planetSizeBar;
+    public int planetSizeNum;
 
-    private Switch craterSwitch;
+    private CheckBox cratersChecked;
+
+    private SharedPreferences mazePreferences;
+    private SharedPreferences.Editor mazeEditor;
+    private String planetType;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_amaze);
-
+        mazePreferences = getSharedPreferences("mazePref",MODE_PRIVATE);
         exploreButtonOnClick();
         revisitButtonOnClick();
         spinnerPlanetSelection();
         skillBarSlider();
         craterSwitchCheckChange();
+
     }
 
     /*
-    Switches to the GeneratingActivity when the user clicks on the explore button by using an intent.
-    Also, displays a toast message and outputs a Log.V indicating that the explore button was clicked.
+    Switches to the GeneratingActivity when explore button is clicked and saves information about selected planet
      */
     private void exploreButtonOnClick(){
         explore = findViewById(R.id.exploreB);
@@ -54,6 +61,12 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
             public void onClick(View view) {
                 Toast.makeText(AMazeActivity.this, "Explore button clicked!", Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User clicked explore button");
+                mazeEditor = mazePreferences.edit();
+                mazeEditor.putString("planet", planetType);
+                mazeEditor.putInt("size", planetSizeNum);
+                mazeEditor.putBoolean("craters", cratersChecked.isChecked());
+                mazeEditor.commit();
+                Toast.makeText(AMazeActivity.this, "Information saved: "+ planetType + "," +planetSizeNum + "," + cratersChecked.isChecked() , Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(AMazeActivity.this, GeneratingActivity.class);
                 startActivity(i);
             }
@@ -69,7 +82,10 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         revisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(AMazeActivity.this, "Revisit button clicked!", Toast.LENGTH_SHORT).show();
+                String lastPlanet = mazePreferences.getString("planet", "");
+                int lastPlanetSize = mazePreferences.getInt("size", 0);
+                boolean lastCratersChecked = mazePreferences.getBoolean("craters", false);
+                Toast.makeText(AMazeActivity.this, "Revisit button clicked! Going to " +lastPlanet + " "+ lastPlanetSize + " Craters: "+ lastCratersChecked, Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User clicked revisit button");
                 Intent i = new Intent(AMazeActivity.this, GeneratingActivity.class);
                 startActivity(i);
@@ -96,13 +112,13 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
     Also, displays a toast message and outputs a Log.V indicating the user's current planet size choice.
      */
     private void skillBarSlider(){
-        skillBarText = (TextView) findViewById(R.id.pSizeBarText);
-        skillBar = (SeekBar) findViewById(R.id.pSizeBar);
-        skillBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        planetSizeText = (TextView) findViewById(R.id.pSizeBarText);
+        planetSizeBar = (SeekBar) findViewById(R.id.pSizeBar);
+        planetSizeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                skillBarNum = progress;
-                skillBarText.setText("Planet Size:"+ progress);
+                planetSizeNum = progress;
+                planetSizeText.setText("Planet Size:"+ progress);
                 Toast.makeText(AMazeActivity.this, "Chosen Planet Size:  " + progress, Toast.LENGTH_SHORT).show();
                 Log.v("skillBarProgress", "User chose a planet size of:  " + progress);
 
@@ -121,22 +137,25 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     /*
-    Creates a listener for the craters (rooms) switch that can change between craters mode on and off.
+    Creates a listener for the craters (rooms) checkbox that can change between craters mode on and off.
     A toast message and Log.V output will indicate the status of the switch and updates if changed.
      */
     private void craterSwitchCheckChange(){
-        craterSwitch = findViewById(R.id.craterSwitch);
-
-        craterSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cratersChecked = findViewById(R.id.craterChecked);
+        cratersChecked.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked){
+            public void onClick(View view) {
+                if (cratersChecked.isChecked()){
+                    cratersChecked.setChecked(true);
                     Toast.makeText(AMazeActivity.this, "Craters mode on", Toast.LENGTH_SHORT).show();
                     Log.v("switch", "User checked craters " );
 
-                }else{
+                }
+                else{
+                    cratersChecked.setChecked(false);
                     Toast.makeText(AMazeActivity.this, "Craters mode off", Toast.LENGTH_SHORT).show();
                     Log.v("switch", "User unchecked craters " );
+
                 }
 
             }
@@ -144,9 +163,9 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
     }
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String text = adapterView.getItemAtPosition(i).toString();
-        Toast.makeText(AMazeActivity.this, "Selected Planet: " + text, Toast.LENGTH_SHORT).show();
-        Log.v("itemSelected", "User selected " + text + " planet");
+        planetType = adapterView.getItemAtPosition(i).toString();
+        Toast.makeText(AMazeActivity.this, "Selected Planet: " + planetType, Toast.LENGTH_SHORT).show();
+        Log.v("itemSelected", "User selected " + planetType + " planet");
     }
 
     @Override

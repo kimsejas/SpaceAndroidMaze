@@ -8,9 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
 
-import edu.wm.cs.cs301.amazebykimberlysejas.R;
-
-public class MazePanel extends androidx.appcompat.widget.AppCompatImageView {
+public class MazePanel extends androidx.appcompat.widget.AppCompatImageView implements P7PanelF22 {
 
     private Paint paint = new Paint();
     private  Bitmap bitmap;
@@ -117,4 +115,68 @@ public class MazePanel extends androidx.appcompat.widget.AppCompatImageView {
 
     }
 
+    @Override
+    public void commit() {
+
+    }
+
+    @Override
+    public boolean isOperational() {
+        return false;
+    }
+
+    @Override
+    public void setColor(int argb) {
+
+    }
+
+    @Override
+    public int getColor() {
+        return 0;
+    }
+
+    @Override
+    public void addBackground(float percentToExit) {
+
+    }
+
+    @Override
+    public void addFilledRectangle(int x, int y, int width, int height) {
+
+    }
+
+    @Override
+    public void addFilledPolygon(int[] xPoints, int[] yPoints, int nPoints) {
+
+    }
+
+    @Override
+    public void addPolygon(int[] xPoints, int[] yPoints, int nPoints) {
+
+    }
+
+    @Override
+    public void addLine(int startX, int startY, int endX, int endY) {
+
+    }
+
+    @Override
+    public void addFilledOval(int x, int y, int width, int height) {
+
+    }
+
+    @Override
+    public void addArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
+
+    }
+
+    @Override
+    public void addMarker(float x, float y, String str) {
+
+    }
+
+    @Override
+    public void setRenderingHint(P7RenderingHints hintKey, P7RenderingHints hintValue) {
+
+    }
 }
