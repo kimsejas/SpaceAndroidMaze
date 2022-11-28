@@ -20,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.util.Random;
+
 import edu.wm.cs.cs301.amazebykimberlysejas.R;
 
 public class AMazeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -49,24 +51,32 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         skillBarSlider();
         craterSwitchCheckChange();
 
+        //random seed
+
+
+
     }
 
     /*
     Switches to the GeneratingActivity when explore button is clicked and saves information about selected planet
      */
     private void exploreButtonOnClick(){
+        Random rand = new Random();
+        int seed = rand.nextInt();
         explore = findViewById(R.id.exploreB);
         explore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(AMazeActivity.this, "Explore button clicked!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AMazeActivity.this, "Explore button clicked! Going to new planet.", Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User clicked explore button");
                 mazeEditor = mazePreferences.edit();
                 mazeEditor.putString("planet", planetType);
                 mazeEditor.putInt("size", planetSizeNum);
                 mazeEditor.putBoolean("craters", cratersChecked.isChecked());
+                mazeEditor.putInt("seed", seed);
                 mazeEditor.commit();
-                Toast.makeText(AMazeActivity.this, "Information saved: "+ planetType + "," +planetSizeNum + "," + cratersChecked.isChecked() , Toast.LENGTH_SHORT).show();
+//                Toast.makeText(AMazeActivity.this, "Information saved: "+ planetType + "," +planetSizeNum + "," + cratersChecked.isChecked() + "seed is " + seed, Toast.LENGTH_SHORT).show();
+                Log.v("maze ", "New planet Chosen. Planet type: " + planetType + ", Planet Size: "+ planetSizeNum + ", Craters Checked: "+ cratersChecked.isChecked()+", Seed: "+ seed);
                 Intent i = new Intent(AMazeActivity.this, GeneratingActivity.class);
                 startActivity(i);
             }
@@ -85,8 +95,10 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
                 String lastPlanet = mazePreferences.getString("planet", "");
                 int lastPlanetSize = mazePreferences.getInt("size", 0);
                 boolean lastCratersChecked = mazePreferences.getBoolean("craters", false);
-                Toast.makeText(AMazeActivity.this, "Revisit button clicked! Going to " +lastPlanet + " "+ lastPlanetSize + " Craters: "+ lastCratersChecked, Toast.LENGTH_SHORT).show();
+                int lastSeed = mazePreferences.getInt("seed", 0);
+                Toast.makeText(AMazeActivity.this, "Revisit button clicked! Going to last planet." , Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User clicked revisit button");
+                Log.v("maze", "Last planet chosen. Planet type: " + lastPlanet + ", Planet Size: "+ lastPlanetSize + ", Craters Checked: "+ lastCratersChecked +", Seed: "+ lastSeed);
                 Intent i = new Intent(AMazeActivity.this, GeneratingActivity.class);
                 startActivity(i);
             }
