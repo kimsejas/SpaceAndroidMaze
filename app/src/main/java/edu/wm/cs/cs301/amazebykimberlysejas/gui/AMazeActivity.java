@@ -50,11 +50,6 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         spinnerPlanetSelection();
         skillBarSlider();
         craterSwitchCheckChange();
-
-        //random seed
-
-
-
     }
 
     /*
