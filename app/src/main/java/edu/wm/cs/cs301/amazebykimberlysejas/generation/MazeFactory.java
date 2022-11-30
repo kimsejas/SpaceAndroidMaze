@@ -105,4 +105,9 @@ public class MazeFactory implements Factory {
 		buildThread = new Thread(builder);
 		buildThread.start();
 	}
+
+	public Thread getBuildThread(){
+		return buildThread;
+
+	}
 }

@@ -3,6 +3,9 @@
  */
 package edu.wm.cs.cs301.amazebykimberlysejas.generation;
 
+import android.util.Log;
+import android.widget.ProgressBar;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -300,6 +303,8 @@ public class DefaultOrder implements Order {
 			progress = (percentage < 0) ? 0 : 100;
 			LOGGER.severe("range violation, " + percentage + " outside 0,1,...,100 range. Used closest legit value for mitigation.");
 		}
+
 	}
+
 
 }

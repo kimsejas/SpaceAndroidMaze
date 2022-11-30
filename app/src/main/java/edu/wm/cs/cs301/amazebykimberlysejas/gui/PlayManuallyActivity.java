@@ -24,6 +24,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
     private ToggleButton fullMaze;
     private ToggleButton showSolution;
     private ToggleButton walls;
+    private Maze maze;
 
     private int pathLength = 0;
 
@@ -47,19 +48,10 @@ public class PlayManuallyActivity extends AppCompatActivity {
 
 
         //getting the maze
-        Maze maze = GeneratingActivity.maze;
-        Log.v("play maze", "maze height: " + maze.getHeight() + " maze width: " + maze.getWidth());
+        maze = GeneratingActivity.maze;
+        Log.v("play manual maze", "maze height: " + maze.getHeight() + " maze width: " + maze.getWidth());
 
 
-
-
-    }
-
-
-    @Override
-    public void onBackPressed(){
-        Intent i = new Intent(PlayManuallyActivity.this, AMazeActivity.class);
-        startActivity(i);
     }
 
     /**

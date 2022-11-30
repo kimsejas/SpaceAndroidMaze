@@ -14,6 +14,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import edu.wm.cs.cs301.amazebykimberlysejas.R;
+import edu.wm.cs.cs301.amazebykimberlysejas.generation.Maze;
 
 public class PlayAnimationActivity extends AppCompatActivity {
     private ToggleButton fullMaze;
@@ -26,6 +27,8 @@ public class PlayAnimationActivity extends AppCompatActivity {
     private SeekBar speedBar;
     private TextView speedBarText;
     private Integer curSpeed;
+
+    private Maze maze;
 
 
 
@@ -45,12 +48,12 @@ public class PlayAnimationActivity extends AppCompatActivity {
         speedBarSlider();
         createGameScreenBitmap();
 
-    }
+        //getting the maze
+        maze = GeneratingActivity.maze;
+        Log.v("play animation maze", "maze height: " + maze.getHeight() + " maze width: " + maze.getWidth());
 
-    @Override
-    public void onBackPressed(){
-        Intent i = new Intent(PlayAnimationActivity.this, AMazeActivity.class);
-        startActivity(i);
+
+
     }
 
     /**

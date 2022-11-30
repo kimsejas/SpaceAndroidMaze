@@ -28,11 +28,12 @@ import edu.wm.cs.cs301.amazebykimberlysejas.generation.MazeFactory;
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.Order;
 
 public class GeneratingActivity extends AppCompatActivity {
-    public static Maze maze;
     private ProgressBar mazeProgressBar;
-    private int curProgress = 0;
+    private int progress = 0;
     private TextView mazeProgressBarText;
-    private Handler mHandler = new Handler();
+
+
+    private final Handler mHandler = new Handler();
 
     public RadioGroup roverTypeGroup;
 
@@ -42,20 +43,17 @@ public class GeneratingActivity extends AppCompatActivity {
     private Boolean playManuallySelected = false;
     private Boolean playAnimationSelected = false;
 
+    private final DefaultOrder order = new DefaultOrder();
+    private final MazeFactory mazeFactory = new MazeFactory() ;
+    public static Maze maze;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_generating);
-
         mazeGenerationProgressBar();
-
         roverTypeGroup = findViewById(R.id.radioGroup);
-
         conditionGroup = findViewById(R.id.conditionGroup);
-
-        mazeConfiguration();
 
 
     }
@@ -67,36 +65,44 @@ public class GeneratingActivity extends AppCompatActivity {
     }
 
     /**
-    Displays and runs the progress bar to show the user the maze generating progression. Creates a thread that runs in the background
-    of the activity to simulate the maze generation.
-    When progress bar is finished it will display messages to either remind the user to select
-    buttons or that the game will begin soon.
-    Switches to either PlayAnimationActivity or PlayManuallyActivity if certain conditions are met.
+     * Starts maze generation progress and updates progress bar.
+     * Creates maze for use once its finished generating.
+     * Switches to either PlayAnimationActivity or PlayManuallyActivity if certain conditions are met.
      */
     private void mazeGenerationProgressBar() {
         mazeProgressBar = (ProgressBar) findViewById(R.id.mazeProgressBar);
         mazeProgressBarText = (TextView) findViewById(R.id.mazeProgressBarText);
+        createMazeOrder();
 
-
+        //background thread that generates the maze and also updates the progress bar
         new Thread(new Runnable() {
-            @Override
             public void run() {
-                while (curProgress <= 100) {
-                    curProgress += 1;
-                    android.os.SystemClock.sleep(200);
+                mazeFactory.order(order);
+                while (progress < 100) {
+                    progress = order.getProgress();
+                    Log.v("progress", "maze gen progress: " + progress);
+                    android.os.SystemClock.sleep(100);
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            mazeProgressBar.setProgress(curProgress);
+                            mazeProgressBar.setProgress(progress);
+                            mazeProgressBarText.setText("Heading To Planet ("+ progress + "%)...");
 
                         }
                     });
-                }
-                mHandler.post(new Runnable() {
+                }mHandler.post(new Runnable() {
                     @Override
                     public void run() {
+
+                        //maze is done generating
+                        mazeFactory.waitTillDelivered();
+                        maze = order.getMaze();
                         threadFinished = true;
                         mazeProgressBarText.setText("Arrived!");
+                        Log.v("generating maze", "maze height: " + maze.getHeight() + " maze width: " + maze.getWidth());
+
+
+                        //checking for conditions to proceed to next activity
                         if (!playAnimationSelected & !playManuallySelected){
                             Toast.makeText(GeneratingActivity.this, "Please select Rover type", Toast.LENGTH_SHORT).show();
                         }
@@ -104,6 +110,7 @@ public class GeneratingActivity extends AppCompatActivity {
                             Toast.makeText(GeneratingActivity.this, "Rover is ready. Game will begin soon!", Toast.LENGTH_SHORT).show();
                             Intent i = new Intent(GeneratingActivity.this, PlayManuallyActivity.class);
                             startActivity(i);
+                            finish();
                         }
                         else if(playAnimationSelected){
                             if (conditionGroup.getCheckedRadioButtonId()  == -1){
@@ -113,22 +120,25 @@ public class GeneratingActivity extends AppCompatActivity {
                                 Toast.makeText(GeneratingActivity.this, "Rover is ready. Game will begin soon!", Toast.LENGTH_SHORT).show();
                                 Intent i = new Intent(GeneratingActivity.this, PlayAnimationActivity.class);
                                 startActivity(i);
+                                finish();
                             }
                         }
+
+
                     }
                 });
 
             }
         }).start();
 
-
     }
 
 
     /**
-     * Creating maze configuration????
+     * Creates maze order based on maze specifications in last activity.
+     * Used to generate maze.
      */
-    private void mazeConfiguration(){
+    private void createMazeOrder(){
         Intent i = getIntent();
         int builderSkillLevel = i.getIntExtra("size", 0);
         boolean builderRooms = i.getBooleanExtra("craters", false);
@@ -140,15 +150,13 @@ public class GeneratingActivity extends AppCompatActivity {
         }else if (Objects.equals(builderType, "BORUVKA")){
             builder = Order.Builder.Boruvka;
         }
-        MazeFactory mazeFactory = new MazeFactory();
-        DefaultOrder order = new DefaultOrder(builderSkillLevel, builder, builderRooms, builderSeed);
-        mazeFactory.order(order);
-        mazeFactory.waitTillDelivered();
-        maze = order.getMaze();
+        order.setSkillLevel(builderSkillLevel);
+        order.setBuilder(builder);
+        order.setPerfect(builderRooms);
+        order.setSeed(builderSeed);
+
         Log.v("config ", "Planet type: " + builder + ", Planet Size: "+ builderSkillLevel + ", Craters Checked: "+ builderRooms+", Seed: "+ builderSeed);
 
-        //testing if maze was properly made
-        Log.v("generating maze", "maze height: " + maze.getHeight() + " maze width: " + maze.getWidth());
 
     }
 
@@ -180,6 +188,7 @@ public class GeneratingActivity extends AppCompatActivity {
             if (playManuallySelected){
                 Intent i = new Intent(GeneratingActivity.this, PlayManuallyActivity.class);
                 startActivity(i);
+                finish();
             } else if (playAnimationSelected){
                 if (conditionGroup.getCheckedRadioButtonId()  == -1){
                     Toast.makeText(GeneratingActivity.this, "Please select Rover condition", Toast.LENGTH_SHORT).show();
@@ -188,6 +197,7 @@ public class GeneratingActivity extends AppCompatActivity {
                     Toast.makeText(GeneratingActivity.this, "Rover is ready. Game will begin soon!", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(GeneratingActivity.this, PlayAnimationActivity.class);
                     startActivity(i);
+                    finish();
                 }
             }
         }
