@@ -2,10 +2,13 @@ package edu.wm.cs.cs301.amazebykimberlysejas.gui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -16,9 +19,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
 
+import java.util.Objects;
+
 import edu.wm.cs.cs301.amazebykimberlysejas.R;
+import edu.wm.cs.cs301.amazebykimberlysejas.generation.DefaultOrder;
+import edu.wm.cs.cs301.amazebykimberlysejas.generation.Maze;
+import edu.wm.cs.cs301.amazebykimberlysejas.generation.MazeFactory;
+import edu.wm.cs.cs301.amazebykimberlysejas.generation.Order;
 
 public class GeneratingActivity extends AppCompatActivity {
+    public static Maze maze;
     private ProgressBar mazeProgressBar;
     private int curProgress = 0;
     private TextView mazeProgressBarText;
@@ -45,6 +55,8 @@ public class GeneratingActivity extends AppCompatActivity {
 
         conditionGroup = findViewById(R.id.conditionGroup);
 
+        mazeConfiguration();
+
 
     }
 
@@ -54,7 +66,7 @@ public class GeneratingActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    /*
+    /**
     Displays and runs the progress bar to show the user the maze generating progression. Creates a thread that runs in the background
     of the activity to simulate the maze generation.
     When progress bar is finished it will display messages to either remind the user to select
@@ -113,8 +125,36 @@ public class GeneratingActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Creating maze configuration????
+     */
+    private void mazeConfiguration(){
+        Intent i = getIntent();
+        int builderSkillLevel = i.getIntExtra("size", 0);
+        boolean builderRooms = i.getBooleanExtra("craters", false);
+        int builderSeed = i.getIntExtra("seed", 13);
+        String builderType = i.getStringExtra("planet");
+        Order.Builder builder = Order.Builder.DFS;
+        if (Objects.equals(builderType, "PRIM")){
+            builder = Order.Builder.Prim;
+        }else if (Objects.equals(builderType, "BORUVKA")){
+            builder = Order.Builder.Boruvka;
+        }
+        MazeFactory mazeFactory = new MazeFactory();
+        DefaultOrder order = new DefaultOrder(builderSkillLevel, builder, builderRooms, builderSeed);
+        mazeFactory.order(order);
+        mazeFactory.waitTillDelivered();
+        maze = order.getMaze();
+        Log.v("config ", "Planet type: " + builder + ", Planet Size: "+ builderSkillLevel + ", Craters Checked: "+ builderRooms+", Seed: "+ builderSeed);
 
-    /*
+        //testing if maze was properly made
+        Log.v("generating maze", "maze height: " + maze.getHeight() + " maze width: " + maze.getWidth());
+
+    }
+
+
+
+    /**
     Function for selecting rover type called in generating xml to indicate which radio button from the radio group was selected.
     Sets the radioId to the button that the user picked, displays a toast message, and outputs a Log.v message.
     Keeps track of the type of rover selected (manual or automatic).
@@ -154,7 +194,7 @@ public class GeneratingActivity extends AppCompatActivity {
 
     }
 
-    /*
+    /**
     Function for selecting rover condition called in generating xml to indicate which radio button from the radio group was selected.
     Sets the radioId to the button that the user picked, displays a toast message,and outputs a Log.v message.
     Switches to PlayAnimationActivity if maze generation is complete and an animation driver was selected.

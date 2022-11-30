@@ -32,7 +32,7 @@ public class WinningActivity extends AppCompatActivity {
 
 
 
-    /*
+    /**
     Customizes the text views related to path length to gameplay
      */
     private void pathLengthDisplayed(){
@@ -53,7 +53,7 @@ public class WinningActivity extends AppCompatActivity {
 
     }
 
-    /*
+    /**
       Customizes the text views related to energy consumption to gameplay
    */
     private void energyDisplayed(){

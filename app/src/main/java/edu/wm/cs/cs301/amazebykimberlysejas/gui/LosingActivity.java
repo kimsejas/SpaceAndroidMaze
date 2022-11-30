@@ -28,7 +28,7 @@ public class LosingActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    /*
+    /**
     Customizes the text views related to path length to gameplay
      */
     private void pathLengthDisplayed(){
@@ -49,7 +49,7 @@ public class LosingActivity extends AppCompatActivity {
 
     }
 
-    /*
+    /**
     Customizes the text views related to energy consumption to gameplay
      */
     private void energyDisplayed(){

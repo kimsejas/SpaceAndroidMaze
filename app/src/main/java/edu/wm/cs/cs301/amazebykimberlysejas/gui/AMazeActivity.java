@@ -2,6 +2,7 @@ package edu.wm.cs.cs301.amazebykimberlysejas.gui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -44,7 +45,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_amaze);
-        mazePreferences = getSharedPreferences("mazePref",MODE_PRIVATE);
+        mazePreferences = getSharedPreferences("mazePref", Context.MODE_PRIVATE);
         exploreButtonOnClick();
         revisitButtonOnClick();
         spinnerPlanetSelection();
@@ -52,7 +53,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         craterSwitchCheckChange();
     }
 
-    /*
+    /**
     Switches to the GeneratingActivity when explore button is clicked and saves information about selected planet
      */
     private void exploreButtonOnClick(){
@@ -70,15 +71,18 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
                 mazeEditor.putBoolean("craters", cratersChecked.isChecked());
                 mazeEditor.putInt("seed", seed);
                 mazeEditor.commit();
-//                Toast.makeText(AMazeActivity.this, "Information saved: "+ planetType + "," +planetSizeNum + "," + cratersChecked.isChecked() + "seed is " + seed, Toast.LENGTH_SHORT).show();
                 Log.v("maze ", "New planet Chosen. Planet type: " + planetType + ", Planet Size: "+ planetSizeNum + ", Craters Checked: "+ cratersChecked.isChecked()+", Seed: "+ seed);
                 Intent i = new Intent(AMazeActivity.this, GeneratingActivity.class);
+                i.putExtra("planet", planetType);
+                i.putExtra("size", planetSizeNum);
+                i.putExtra("craters", cratersChecked.isChecked());
+                i.putExtra("seed", seed);
                 startActivity(i);
             }
         });
     }
 
-    /*
+    /**
     Switches to the GeneratingActivity when the user clicks on the revisit button by using an intent.
     Also, displays a toast message and outputs a Log.V indicating that the revisit button was clicked.
      */
@@ -95,13 +99,17 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
                 Log.v("buttonClicked", "User clicked revisit button");
                 Log.v("maze", "Last planet chosen. Planet type: " + lastPlanet + ", Planet Size: "+ lastPlanetSize + ", Craters Checked: "+ lastCratersChecked +", Seed: "+ lastSeed);
                 Intent i = new Intent(AMazeActivity.this, GeneratingActivity.class);
+                i.putExtra("planet", lastPlanet);
+                i.putExtra("size", lastPlanetSize);
+                i.putExtra("craters", lastCratersChecked);
+                i.putExtra("seed", lastSeed);
                 startActivity(i);
             }
         });
 
 
     }
-    /*
+    /**
     Displays the drop down spinner selection for the user to select one of the planets (maze generation algorithms).
     Also, displays a toast message and outputs a Log.V indicating of the user's selection.
      */
@@ -113,7 +121,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         spinner.setOnItemSelectedListener(this);
     }
 
-    /*
+    /**
     Allows for the seekbar to progress from size to size indicating the planet size (maze skill level) the user chose.
     Changes the text displayed to the user of the current planet size.
     Also, displays a toast message and outputs a Log.V indicating the user's current planet size choice.
@@ -143,7 +151,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
 
     }
 
-    /*
+    /**
     Creates a listener for the craters (rooms) checkbox that can change between craters mode on and off.
     A toast message and Log.V output will indicate the status of the switch and updates if changed.
      */

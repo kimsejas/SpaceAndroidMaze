@@ -33,7 +33,7 @@ public class MazePanel extends androidx.appcompat.widget.AppCompatImageView impl
 
     }
 
-    /*
+    /**
     Called in all constructors methods to initalize the same private bitmap,canvas, and other methods
      */
     public void init(){
@@ -62,7 +62,7 @@ public class MazePanel extends androidx.appcompat.widget.AppCompatImageView impl
     }
 
 
-    /*
+    /**
     Draws a static test image for the PlayManuallyActivity.
     Gray rectangle on top,black rectangle on bottom, and red circle in middle.
      */
@@ -78,7 +78,7 @@ public class MazePanel extends androidx.appcompat.widget.AppCompatImageView impl
         canvas.drawCircle(400, 400, 80, red);
     }
 
-    /*
+    /**
     Draws a static test image for the PlayAnimationActivity.
     Gray rectangle on top,black rectangle on bottom, two polygons to represent walls
      */

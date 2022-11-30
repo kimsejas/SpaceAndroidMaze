@@ -18,6 +18,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import edu.wm.cs.cs301.amazebykimberlysejas.R;
+import edu.wm.cs.cs301.amazebykimberlysejas.generation.Maze;
 
 public class PlayManuallyActivity extends AppCompatActivity {
     private ToggleButton fullMaze;
@@ -45,6 +46,13 @@ public class PlayManuallyActivity extends AppCompatActivity {
         createGameScreenBitmap();
 
 
+        //getting the maze
+        Maze maze = GeneratingActivity.maze;
+        Log.v("play maze", "maze height: " + maze.getHeight() + " maze width: " + maze.getWidth());
+
+
+
+
     }
 
 
@@ -54,7 +62,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    /*
+    /**
     Toggle button for full maze on or off that displays Toast and Log.v messages
      */
     private void fullMazeButton(){
@@ -68,7 +76,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         });
     }
 
-    /*
+    /**
     Toggle button for show solution on or off that displays Toast and Log.v messages
      */
     private void showSolutionButton(){
@@ -82,7 +90,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         });
     }
 
-    /*
+    /**
     Toggle button for full maze on or off that displays Toast and Log.v messages
      */
     private void wallsButton(){
@@ -96,7 +104,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         });
     }
 
-    /*
+    /**
     Zooms in to the maze view when image button is clicked
      */
     private void zoomInClick(){
@@ -111,7 +119,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
 
     }
 
-    /*
+    /**
     Zooms out of the maze view when image button is clicked
      */
     private void zoomOutClick(){
@@ -126,7 +134,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
 
     }
 
-    /*
+    /**
     Switches to WinningActivity when user clicks on shortcut button
      */
     private void shortcutClicked(){
@@ -143,7 +151,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         });
     }
 
-    /*
+    /**
     Moves user forward when up arrow image button is clicked. Adds one to path length.
      */
     private void moveUp(){
@@ -158,7 +166,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         });
     }
 
-    /*
+    /**
     Handles user jump when jump image button is clicked. Adds one to path length.
      */
     private void jump(){
@@ -173,7 +181,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         });
     }
 
-    /*
+    /**
     Rotates user left when left arrow image button is clicked.
      */
     private void rotateLeft(){
@@ -188,7 +196,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
 
     }
 
-    /*
+    /**
    Rotates user right when right arrow image button is clicked.
     */
     private void rotateRight(){
@@ -204,7 +212,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
     }
 
 
-    /*
+    /**
     Draws the game screen by using a custom view maze panel
      */
     private void createGameScreenBitmap(){

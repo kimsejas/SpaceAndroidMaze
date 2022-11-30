@@ -53,7 +53,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    /*
+    /**
     Toggle button for full maze on or off that displays Toast and Log.v messages
      */
     private void fullMazeButton(){
@@ -67,7 +67,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
         });
     }
 
-    /*
+    /**
     Toggle button for show solution on or off that displays Toast and Log.v messages
      */
     private void showSolutionButton(){
@@ -81,7 +81,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
         });
     }
 
-    /*
+    /**
     Toggle button for full maze on or off that displays Toast and Log.v messages
      */
     private void wallsButton(){
@@ -95,7 +95,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
         });
     }
 
-    /*
+    /**
     Zooms in to the maze view when image button is clicked
      */
     private void zoomInClick(){
@@ -110,7 +110,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
 
     }
 
-    /*
+    /**
     Zooms out of the maze view when image button is clicked
      */
     private void zoomOutClick(){
@@ -125,7 +125,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
 
     }
 
-    /*
+    /**
     Switches between playing and pausing animation by updating image
      */
     private void playPauseClick(){
@@ -152,7 +152,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
 
     }
 
-    /*
+    /**
     Switches to WinningActivity when button is clicked
      */
     private void toWinningClick(){
@@ -170,7 +170,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
 
     }
 
-    /*
+    /**
     Switches to LosingActivity when button is clicked
      */
     private void toLosingClick(){
@@ -189,7 +189,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
     }
 
 
-    /*
+    /**
     Allows for the user to adjust speed of animation and updates text that displays current speed
      */
     private void speedBarSlider(){
@@ -217,7 +217,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
     }
 
 
-    /*
+    /**
     Draws the game screen by using a custom view maze panel
      */
     private void createGameScreenBitmap(){
