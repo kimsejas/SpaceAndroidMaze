@@ -22,7 +22,9 @@ import android.util.Log;
 import java.util.Objects;
 
 import edu.wm.cs.cs301.amazebykimberlysejas.R;
+import edu.wm.cs.cs301.amazebykimberlysejas.generation.CardinalDirection;
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.DefaultOrder;
+import edu.wm.cs.cs301.amazebykimberlysejas.generation.Floorplan;
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.Maze;
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.MazeFactory;
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.Order;
@@ -47,6 +49,8 @@ public class GeneratingActivity extends AppCompatActivity {
     private final MazeFactory mazeFactory = new MazeFactory() ;
     public static Maze maze;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +58,6 @@ public class GeneratingActivity extends AppCompatActivity {
         mazeGenerationProgressBar();
         roverTypeGroup = findViewById(R.id.radioGroup);
         conditionGroup = findViewById(R.id.conditionGroup);
-
-
     }
 
     @Override
@@ -63,6 +65,7 @@ public class GeneratingActivity extends AppCompatActivity {
         Intent i = new Intent(GeneratingActivity.this, AMazeActivity.class);
         startActivity(i);
     }
+
 
     /**
      * Starts maze generation progress and updates progress bar.
@@ -148,7 +151,7 @@ public class GeneratingActivity extends AppCompatActivity {
         if (Objects.equals(builderType, "PRIM")){
             builder = Order.Builder.Prim;
         }else if (Objects.equals(builderType, "BORUVKA")){
-            builder = Order.Builder.Boruvka;
+            builder = Order.Builder.DFS; // Boruvka implementation is not well done
         }
         order.setSkillLevel(builderSkillLevel);
         order.setBuilder(builder);

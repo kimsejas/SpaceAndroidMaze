@@ -2,6 +2,7 @@ package edu.wm.cs.cs301.amazebykimberlysejas.gui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -18,9 +19,12 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import edu.wm.cs.cs301.amazebykimberlysejas.R;
+import edu.wm.cs.cs301.amazebykimberlysejas.generation.Floorplan;
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.Maze;
 
 public class PlayManuallyActivity extends AppCompatActivity {
+
+    public static Context context;
     private ToggleButton fullMaze;
     private ToggleButton showSolution;
     private ToggleButton walls;
@@ -28,11 +32,15 @@ public class PlayManuallyActivity extends AppCompatActivity {
 
     private int pathLength = 0;
 
+    Floorplan seenCells = new Floorplan(GeneratingActivity.maze.getWidth()+1,GeneratingActivity.maze.getHeight()+1) ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_manually);
+        context = getApplicationContext();
+
 
         fullMazeButton();
         showSolutionButton();
@@ -44,14 +52,13 @@ public class PlayManuallyActivity extends AppCompatActivity {
         jump();
         rotateLeft();
         rotateRight();
-        createGameScreenBitmap();
 
 
         //getting the maze
         maze = GeneratingActivity.maze;
         Log.v("play manual maze", "maze height: " + maze.getHeight() + " maze width: " + maze.getWidth());
 
-
+        createGameScreenBitmap();
     }
 
     /**
@@ -208,9 +215,29 @@ public class PlayManuallyActivity extends AppCompatActivity {
     Draws the game screen by using a custom view maze panel
      */
     private void createGameScreenBitmap(){
-        MazePanel gameScreen = (MazePanel) findViewById(R.id.gameScreen);
-        gameScreen.drawManualTestImage();
-
+//        MazePanel panel = (MazePanel) findViewById(R.id.gameScreen);
+//        if (panel == null) {
+////            printWarning();
+//            return;
+//        }
+//        int walkStep = 0;
+//        int angle = 90;
+//        int px = maze.getStartingPosition()[0];
+//        int py = maze.getStartingPosition()[1];
+//
+////        int px2 = maze.getNeighborCloserToExit(px,py)[0];
+////        int py2 = maze.getNeighborCloserToExit(px,py)[1];
+//
+//
+//        // draw the first person view and the map view if wanted
+//        FirstPersonView firstPersonView = new FirstPersonView(Constants.VIEW_WIDTH,
+//                Constants.VIEW_HEIGHT, Constants.MAP_UNIT,
+//                Constants.STEP_SIZE, seenCells, GeneratingActivity.maze.getRootnode()
+//        );
+//
+//        firstPersonView.draw(panel, px, py, walkStep, angle,
+//                maze.getPercentageForDistanceToExit(px, py)) ;
+//        panel.commit();
     }
 
 
