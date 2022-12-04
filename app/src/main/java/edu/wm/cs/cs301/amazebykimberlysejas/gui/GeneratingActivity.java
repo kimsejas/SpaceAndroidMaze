@@ -155,7 +155,7 @@ public class GeneratingActivity extends AppCompatActivity {
         }
         order.setSkillLevel(builderSkillLevel);
         order.setBuilder(builder);
-        order.setPerfect(builderRooms);
+        order.setPerfect(!builderRooms);
         order.setSeed(builderSeed);
 
         Log.v("config ", "Planet type: " + builder + ", Planet Size: "+ builderSkillLevel + ", Craters Checked: "+ builderRooms+", Seed: "+ builderSeed);

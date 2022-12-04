@@ -216,6 +216,11 @@ public class PlayManuallyActivity extends AppCompatActivity {
                 pathLength+=1;
                 Toast.makeText(PlayManuallyActivity.this, "Jumped!", Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User clicked jumped button. Path length is: "+ pathLength);
+                int[] tmpDxDy = cd.getDxDyDirection();
+                if (maze.isValidPosition(px + tmpDxDy[0], py + tmpDxDy[1])) {
+                    setCurrentPosition(px + tmpDxDy[0], py + tmpDxDy[1]) ;
+                    draw(cd.angle(), 0) ;
+                }
             }
         });
     }
@@ -319,6 +324,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         mapView = new Map(seenCells, 25, maze) ;
         // draw the initial screen for this state
         draw(cd.angle(), 0);
+        drawHintIfNecessary();
     }
 
 
