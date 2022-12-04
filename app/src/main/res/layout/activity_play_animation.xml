@@ -6,21 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".gui.PlayAnimationActivity">
 
+
     <TextView
-        android:id="@+id/fullMazeText"
+        android:id="@+id/mapText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="FULL MAZE"
+        android:text="MAP"
         android:typeface="monospace"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.083"
+        app:layout_constraintHorizontal_bias="0.134"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <ToggleButton
-        android:id="@+id/fullMazeB"
+        android:id="@+id/mapB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ToggleButton"
@@ -77,6 +77,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/togglebutton"
+        android:checked="true"
         android:textOff="@string/off"
         android:textOn="@string/on"
         android:typeface="monospace"
