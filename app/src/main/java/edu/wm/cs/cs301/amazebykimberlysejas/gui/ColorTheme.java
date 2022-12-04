@@ -119,11 +119,11 @@ public class ColorTheme {
 	 * The actual color used in rendering depends on finding the best match
 	 * given the color space available for a particular output device.
 	 * Alpha is defaulted to 255.
-	 * @param rgb the rgb value
+	 * @param argb the rgb value
 	 * @return the matching instance of a color
 	 */
-	public static Color getColor(int rgb) {
-		return Color.valueOf(rgb);
+	public static Color getColor(int argb) {
+		return Color.valueOf(argb);
 	}
 	/**
 	 * Class encapsulates a color setting for the background and walls.

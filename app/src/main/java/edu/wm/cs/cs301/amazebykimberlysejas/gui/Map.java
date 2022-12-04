@@ -3,6 +3,7 @@
  */
 package edu.wm.cs.cs301.amazebykimberlysejas.gui;
 
+import android.graphics.Color;
 import android.util.Log;
 
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.CardinalDirection;
@@ -192,6 +193,7 @@ public class Map {
 
 //		g.setColor(ColorTheme.getColor(ColorTheme.MazeColors.MAP_DEFAULT));
 		panel.setColor(ColorTheme.getColor(ColorTheme.MazeColors.MAP_DEFAULT).toArgb());
+		panel.setColor(Color.GREEN);
 
 		// note: 1/2 of width and height is the center of the screen
 		// the whole map is centered at the current position
@@ -414,7 +416,9 @@ public class Map {
 		// top left corner is (centerX-radius, centerY-radius)
 		// width and height is simply the diameter
 //		gc.fillOval(centerX-diameter/2, centerY-diameter/2, diameter, diameter);
+
 		panel.addFilledOval(centerX-diameter/2, centerY-diameter/2, diameter, diameter);
+
 		// draw a red arrow with the oval to show current direction
 		drawArrow(panel, viewDX, viewDY, centerX, centerY);
 	}

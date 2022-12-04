@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import edu.wm.cs.cs301.amazebykimberlysejas.gui.ColorTheme;
 import edu.wm.cs.cs301.amazebykimberlysejas.gui.MazeFileWriter;
 
 
@@ -122,7 +123,7 @@ public class Wall {
         partition = false;
         seen = false;
         // determine color
-//        setColor(ColorTheme.getWallColor(distance, cc, getExtensionX()));
+        setColor(ColorTheme.getWallColor(distance, cc, getExtensionX()).toArgb());
         // all fields initialized
     }
 
@@ -330,8 +331,10 @@ public class Wall {
          * int b = SingleRandom.getRandom().nextIntWithinInterval(20,240) ;
          * this.col = new Color(r,g,b).getRGB(); return ;
          */
+
     	col = color;
     }
+
     
     /**
      * @return the x

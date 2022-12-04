@@ -90,63 +90,63 @@ public class MazePanel extends View implements P7PanelF22 {
 //
 //    }
 
-    /**
-    Draws a static test image for the PlayAnimationActivity.
-    Gray rectangle on top,black rectangle on bottom, two polygons to represent walls
-     */
-    public void drawAnimationTestImage(){
-        Paint black = new Paint();
-        black.setColor(Color.BLACK);
-        Paint gray = new Paint();
-        gray.setColor(Color.GRAY);
-        canvas.drawRect(0, 400, 800, 800, black);
-        canvas.drawRect(0, 0, 800, 532, gray);
-
-        addBackground(0);
-        setColor(Color.BLUE);
-        addFilledOval(400, 400, 80*2, 80*2);
-
-
-        Paint yellow = new Paint();
-        yellow.setColor(Color.YELLOW);
-        Path leftWallPath = new Path();
-        leftWallPath.moveTo(0,0);
-        leftWallPath.lineTo(200, 266);
-        leftWallPath.lineTo(200,532);
-        leftWallPath.lineTo(0,800);
-        leftWallPath.lineTo(0,0);
-        leftWallPath.close();
-        canvas.drawPath(leftWallPath, yellow);
-
-        setColor(Color.YELLOW);
-        addFilledPolygon(new int[]{0, 200, 200, 0}, new int[] {0, 200, 400, 800, }, 4);
-
-        Paint green = new Paint();
-        green.setColor(Color.GREEN);
-        Path rightWallPath = new Path();
-        rightWallPath.moveTo(800,0);
-        rightWallPath.lineTo(600, 266);
-        rightWallPath.lineTo(600,532);
-        rightWallPath.lineTo(800,800);
-        rightWallPath.lineTo(800,0);
-        rightWallPath.close();
-        canvas.drawPath(rightWallPath, green);
-
-        setColor(Color.GREEN);
-        addFilledPolygon(new int[]{800, 600, 600, 800}, new int[] {0, 200, 400, 800, }, 4);
-
-        setColor(Color.RED);
-        addPolygon(new int[]{800, 600, 600, 800}, new int[] {0, 200, 400, 800, }, 4);
-
-
-        //test add arc
-        setColor(Color.WHITE);
-        addArc(200, 200, 400, 200, 0, 360 );
-
-        setColor(Color.RED);
-        addMarker(400,200, "N");
-
-    }
+//    /**
+//    Draws a static test image for the PlayAnimationActivity.
+//    Gray rectangle on top,black rectangle on bottom, two polygons to represent walls
+//     */
+//    public void drawAnimationTestImage(){
+//        Paint black = new Paint();
+//        black.setColor(Color.BLACK);
+//        Paint gray = new Paint();
+//        gray.setColor(Color.GRAY);
+//        canvas.drawRect(0, 400, 800, 800, black);
+//        canvas.drawRect(0, 0, 800, 532, gray);
+//
+//        addBackground(0);
+//        setColor(Color.BLUE);
+//        addFilledOval(400, 400, 80*2, 80*2);
+//
+//
+//        Paint yellow = new Paint();
+//        yellow.setColor(Color.YELLOW);
+//        Path leftWallPath = new Path();
+//        leftWallPath.moveTo(0,0);
+//        leftWallPath.lineTo(200, 266);
+//        leftWallPath.lineTo(200,532);
+//        leftWallPath.lineTo(0,800);
+//        leftWallPath.lineTo(0,0);
+//        leftWallPath.close();
+//        canvas.drawPath(leftWallPath, yellow);
+//
+//        setColor(Color.YELLOW);
+//        addFilledPolygon(new int[]{0, 200, 200, 0}, new int[] {0, 200, 400, 800, }, 4);
+//
+//        Paint green = new Paint();
+//        green.setColor(Color.GREEN);
+//        Path rightWallPath = new Path();
+//        rightWallPath.moveTo(800,0);
+//        rightWallPath.lineTo(600, 266);
+//        rightWallPath.lineTo(600,532);
+//        rightWallPath.lineTo(800,800);
+//        rightWallPath.lineTo(800,0);
+//        rightWallPath.close();
+//        canvas.drawPath(rightWallPath, green);
+//
+//        setColor(Color.GREEN);
+//        addFilledPolygon(new int[]{800, 600, 600, 800}, new int[] {0, 200, 400, 800, }, 4);
+//
+//        setColor(Color.RED);
+//        addPolygon(new int[]{800, 600, 600, 800}, new int[] {0, 200, 400, 800, }, 4);
+//
+//
+//        //test add arc
+//        setColor(Color.WHITE);
+//        addArc(200, 200, 400, 200, 0, 360 );
+//
+//        setColor(Color.RED);
+//        addMarker(400,200, "N");
+//
+//    }
 
 
 
@@ -180,27 +180,29 @@ public class MazePanel extends View implements P7PanelF22 {
     public void addBackground(float percentToExit) {
 
 //        setColor(ColorTheme.getColor(ColorTheme.MazeColors.BACKGROUND_TOP,percentToExit).toArgb());
-        Bitmap fillBMPTop= BitmapFactory.decodeResource(getResources(), R.drawable.galaxy);
-        BitmapShader fillBMPshaderTop = new BitmapShader(fillBMPTop, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setShader(fillBMPshaderTop);
+
+//        Bitmap fillBMPTop= BitmapFactory.decodeResource(getResources(), R.drawable.galaxy);
+//        BitmapShader fillBMPshaderTop = new BitmapShader(fillBMPTop, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+//        paint.setStyle(Paint.Style.FILL);
+//        paint.setShader(fillBMPshaderTop);
 
         //black on bottom, gray on top
-//        setColor(Color.GRAY);
+        setColor(Color.GRAY);
         addFilledRectangle(0, 0, 800, 400);
 
-        Bitmap fillBMPB = BitmapFactory.decodeResource(getResources(), R.drawable.planettexture);
-        BitmapShader fillBMPshader = new BitmapShader(fillBMPB, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setShader(fillBMPshader);
+//        Bitmap fillBMPB = BitmapFactory.decodeResource(getResources(), R.drawable.planettexture);
+//        BitmapShader fillBMPshader = new BitmapShader(fillBMPB, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+//        paint.setStyle(Paint.Style.FILL);
+//        paint.setShader(fillBMPshader);
 
 //        setColor(ColorTheme.getColor(ColorTheme.MazeColors.BACKGROUND_BOTTOM,percentToExit).toArgb());
-//        setColor(Color.BLACK);
+        setColor(Color.BLACK);
         addFilledRectangle(0, 400, 800, 400);
     }
 
     @Override
     public void addFilledRectangle(int x, int y, int width, int height) {
+        paint.setStyle(Paint.Style.FILL);
         int right = x + width;
         int bottom = y + height;
         canvas.drawRect(x, y, right, bottom, paint);
@@ -209,12 +211,11 @@ public class MazePanel extends View implements P7PanelF22 {
     @Override
     public void addFilledPolygon(int[] xPoints, int[] yPoints, int nPoints) {
 
-        Bitmap fillBMP = BitmapFactory.decodeResource(getResources(), R.drawable.concrete);
-        BitmapShader fillBMPshader = new BitmapShader(fillBMP, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+//        Bitmap fillBMP = BitmapFactory.decodeResource(getResources(), R.drawable.concrete);
+//        BitmapShader fillBMPshader = new BitmapShader(fillBMP, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+//        paint.setStyle(Paint.Style.FILL);
+//        paint.setShader(fillBMPshader);
         paint.setStyle(Paint.Style.FILL);
-        paint.setShader(fillBMPshader);
-
-
         float moveToX = xPoints[0];
         float moveToY = yPoints[0];
         Path path = new Path();
@@ -247,15 +248,12 @@ public class MazePanel extends View implements P7PanelF22 {
 
     @Override
     public void addLine(int startX, int startY, int endX, int endY) {
-        float x1 = (float) startX;
-        float y1 = (float) startY;
-        float x2 = (float) endX;
-        float y2 = (float) endY;
-        canvas.drawLine(x1,y1, x2, y2, paint);
+        canvas.drawLine(startX,startY, endX , endY, paint);
     }
 
     @Override
     public void addFilledOval(int x, int y, int width, int height) {
+        paint.setStyle(Paint.Style.FILL);
         int right = x + width;
         int bottom = y + height;
         canvas.drawOval(x,y,right,bottom,paint);
@@ -273,8 +271,9 @@ public class MazePanel extends View implements P7PanelF22 {
 
     @Override
     public void addMarker(float x, float y, String str) {
-        paint.setTextSize(50);
-        canvas.drawText(str, x, y, paint);
+        paint.setTextSize(15);
+        paint.setStrokeWidth(1);
+        canvas.drawText(str, x-5, y+5, paint);
     }
 
     @Override
