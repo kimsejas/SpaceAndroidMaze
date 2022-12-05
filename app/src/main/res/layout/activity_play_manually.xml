@@ -124,18 +124,6 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/shortcutB"
-        android:layout_width="89dp"
-        android:layout_height="88dp"
-        android:text="Shortcut"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.973"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.992" />
-
     <TableLayout
         android:layout_width="187dp"
         android:layout_height="120dp"

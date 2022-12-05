@@ -57,7 +57,6 @@ public class PlayManuallyActivity extends AppCompatActivity {
         wallsButton();
         zoomInClick();
         zoomOutClick();
-        shortcutClicked();
         moveUp();
         jump();
         rotateLeft();
@@ -91,7 +90,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(PlayManuallyActivity.this, "Map mode: "+ map.getText(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PlayManuallyActivity.this, "Map mode: "+ map.getText(), Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User toggled map mode " +  map.getText());
                 draw(cd.angle(), 0);
             }
@@ -106,7 +105,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         solution.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(PlayManuallyActivity.this, "Show Solution mode: "+ solution.getText(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PlayManuallyActivity.this, "Show Solution mode: "+ solution.getText(), Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User toggled show solution mode " +  solution.getText());
                 draw(cd.angle(), 0);
             }
@@ -123,7 +122,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showMaze = walls.isChecked();
-                Toast.makeText(PlayManuallyActivity.this, "Walls Up: "+ walls.getText(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PlayManuallyActivity.this, "Walls Up: "+ walls.getText(), Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User toggled walls up mode " +  walls.getText());
                 if (showMaze) {
                     draw(cd.angle(), 0);
@@ -145,10 +144,11 @@ public class PlayManuallyActivity extends AppCompatActivity {
         zoomIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(PlayManuallyActivity.this, "Zoomed in +", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PlayManuallyActivity.this, "Zoomed in +", Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User zoomed in ");
                 mapView.incrementMapScale();
                 draw(cd.angle(), 0) ;
+                drawHintIfNecessary();
             }
         });
 
@@ -162,31 +162,14 @@ public class PlayManuallyActivity extends AppCompatActivity {
         zoomOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(PlayManuallyActivity.this, "Zoomed out -", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PlayManuallyActivity.this, "Zoomed out -", Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User zoomed out ");
                 mapView.decrementMapScale();
                 draw(cd.angle(), 0) ;
+                drawHintIfNecessary();
             }
         });
 
-    }
-
-    /**
-    Switches to WinningActivity when user clicks on shortcut button
-     */
-    private void shortcutClicked(){
-        Button shortcut = findViewById(R.id.shortcutB);
-        shortcut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(PlayManuallyActivity.this, "Shortcut button clicked!", Toast.LENGTH_SHORT).show();
-                Log.v("buttonClicked", "User clicked shortcut button, switch to winning");
-                Intent i = new Intent(PlayManuallyActivity.this, WinningActivity.class);
-                i.putExtra("From", "Manual");
-                startActivity(i);
-                finish();
-            }
-        });
     }
 
     /**
@@ -197,10 +180,12 @@ public class PlayManuallyActivity extends AppCompatActivity {
         upArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pathLength+=1;
-                Toast.makeText(PlayManuallyActivity.this, "Moved up!", Toast.LENGTH_SHORT).show();
-                Log.v("buttonClicked", "User clicked arrow up button, moved forwardPath length is: " + pathLength);
+//                Toast.makeText(PlayManuallyActivity.this, "Moved up!", Toast.LENGTH_SHORT).show();
                 walk(1);
+                Log.v("buttonClicked", "User clicked arrow up button, moved forward. Path length is: " + pathLength);
+                if (isOutside(px,py)) {
+                    switchFromPlayingToFinal(pathLength);
+                }
             }
         });
     }
@@ -213,14 +198,16 @@ public class PlayManuallyActivity extends AppCompatActivity {
         jumpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pathLength+=1;
-                Toast.makeText(PlayManuallyActivity.this, "Jumped!", Toast.LENGTH_SHORT).show();
-                Log.v("buttonClicked", "User clicked jumped button. Path length is: "+ pathLength);
+//                Toast.makeText(PlayManuallyActivity.this, "Jumped!", Toast.LENGTH_SHORT).show();
                 int[] tmpDxDy = cd.getDxDyDirection();
                 if (maze.isValidPosition(px + tmpDxDy[0], py + tmpDxDy[1])) {
                     setCurrentPosition(px + tmpDxDy[0], py + tmpDxDy[1]) ;
                     draw(cd.angle(), 0) ;
+                    pathLength+=1;
+                }else{
+                    Toast.makeText(PlayManuallyActivity.this, "Cannot jump outside maze planet!", Toast.LENGTH_SHORT).show();
                 }
+                Log.v("buttonClicked", "User clicked jumped button. Path length is: "+ pathLength);
             }
         });
     }
@@ -233,7 +220,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         leftArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(PlayManuallyActivity.this, "Rotated left!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PlayManuallyActivity.this, "Rotated left!", Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User clicked left arrow button, rotated left");
                 rotate(1);
             }
@@ -249,7 +236,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         rightArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(PlayManuallyActivity.this, "Rotated right!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PlayManuallyActivity.this, "Rotated right!", Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User clicked right arrow button, rotated right");
                 rotate(-1);
             }
@@ -321,7 +308,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
                 Constants.VIEW_HEIGHT, Constants.MAP_UNIT,
                 Constants.STEP_SIZE, seenCells, maze.getRootnode()) ;
 
-        mapView = new Map(seenCells, 25, maze) ;
+        mapView = new Map(seenCells, 30, maze) ;
         // draw the initial screen for this state
         draw(cd.angle(), 0);
         drawHintIfNecessary();
@@ -386,6 +373,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         // check if there is a wall in the way
         if (!wayIsClear(dir))
             return;
+        pathLength+=1;
         int walkStep = 0;
         // walkStep is a parameter of FirstPersonView.draw()
         // it is used there for scaling steps
@@ -432,7 +420,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
      * Draws and waits. Used to obtain a smooth appearance for rotate and move operations
      */
     private void slowedDownRedraw(int angle, int walkStep) {
-        Log.v("slowed down redraw", "Drawing intermediate figures: angle " + angle + ", walkStep " + walkStep);
+//        Log.v("slowed down redraw", "Drawing intermediate figures: angle " + angle + ", walkStep " + walkStep);
         draw(angle, walkStep);
         try {
             Thread.sleep(25);
@@ -470,6 +458,30 @@ public class PlayManuallyActivity extends AppCompatActivity {
                 viewx+") y="+viewy/Constants.MAP_UNIT+" ("+viewy+") ang="+
                 angle+" dx="+dx+" dy="+dy+" "+viewdx+" "+viewdy);
                 */
+    }
+
+    /**
+     * Checks if the given position is outside the maze
+     * @param x coordinate of position
+     * @param y coordinate of position
+     * @return true if position is outside, false otherwise
+     */
+    private boolean isOutside(int x, int y) {
+        return !maze.isValidPosition(x, y) ;
+    }
+
+    /**
+     * Switches the controller to the final screen
+     * @param pathLength gives the length of the path
+     */
+    public void switchFromPlayingToFinal(int pathLength) {
+        Log.v("Game end", "Switching from playing to winning screen");
+//        Toast.makeText(PlayManuallyActivity.this, "Game ended. You win!", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(PlayManuallyActivity.this, WinningActivity.class);
+        i.putExtra("From", "Manual");
+        i.putExtra("Pathlength", pathLength);
+        startActivity(i);
+        finish();
     }
 
 
