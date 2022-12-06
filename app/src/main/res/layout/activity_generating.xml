@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".gui.GeneratingActivity">
+    tools:context=".gui.GeneratingActivity"
+    android:background="@drawable/background3">
 
     <ProgressBar
         android:id="@+id/mazeProgressBar"
@@ -24,6 +25,7 @@
         android:text="@string/heading_to_planet"
         android:textSize="20sp"
         android:typeface="monospace"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -49,6 +51,7 @@
             android:layout_weight="1"
             android:checked="false"
             android:onClick="checkButton"
+            android:textColor="@color/white"
             android:text="@string/wizard"
             android:typeface="monospace" />
 
@@ -56,6 +59,7 @@
             android:id="@+id/wallfollowerB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:layout_weight="1"
             android:checked="false"
             android:onClick="checkButton"
@@ -65,6 +69,7 @@
         <RadioButton
             android:id="@+id/manualB"
             android:layout_width="190dp"
+            android:textColor="@color/white"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:checked="false"
@@ -78,6 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/chooseRover"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -89,6 +95,7 @@
     <TextView
         android:id="@+id/conditionText"
         android:layout_width="wrap_content"
+        android:textColor="@color/white"
         android:layout_height="wrap_content"
         android:text="@string/choose_rover_condition"
         android:textSize="20sp"
@@ -106,46 +113,51 @@
         android:layout_height="198dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.911">
+        app:layout_constraintVertical_bias="0.95">
 
         <RadioButton
             android:id="@+id/premiumB"
             android:layout_width="match_parent"
+
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="checkConditionButton"
             android:text="@string/premium"
-            android:typeface="monospace"
-            android:onClick="checkConditionButton"/>
+            android:textColor="@color/white"
+            android:typeface="monospace" />
 
         <RadioButton
             android:id="@+id/mediocreB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:typeface="monospace"
+            android:onClick="checkConditionButton"
             android:text="@string/mediocre"
-            android:onClick="checkConditionButton"/>
+            android:textColor="@color/white"
+            android:typeface="monospace" />
 
         <RadioButton
             android:id="@+id/sosoB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:typeface="monospace"
+            android:onClick="checkConditionButton"
             android:text="@string/soso"
-            android:onClick="checkConditionButton"/>
+            android:textColor="@color/white"
+            android:typeface="monospace" />
 
         <RadioButton
             android:id="@+id/shakyB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:typeface="monospace"
+            android:onClick="checkConditionButton"
             android:text="@string/shaky"
-            android:onClick="checkConditionButton"/>
+            android:textColor="@color/white"
+            android:typeface="monospace" />
 
     </RadioGroup>
 
@@ -160,7 +172,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.499"
-        app:srcCompat="@drawable/wizard" />
+        app:srcCompat="@drawable/wizard2" />
 
     <ImageView
         android:id="@+id/wf"
@@ -172,7 +184,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.404"
-        app:srcCompat="@drawable/wallfollower" />
+        app:srcCompat="@drawable/wallfollower2" />
 
     <ImageView
         android:id="@+id/manualImg"
@@ -184,7 +196,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.595"
-        app:srcCompat="@drawable/manual" />
+        app:srcCompat="@drawable/manual2" />
 
     <ImageView
         android:id="@+id/imageView3"

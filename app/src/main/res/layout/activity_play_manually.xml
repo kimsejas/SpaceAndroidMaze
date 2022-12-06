@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".gui.PlayManuallyActivity">
+    tools:context=".gui.PlayManuallyActivity"
+    android:background="@drawable/background3">
 
 
     <TextView
@@ -13,12 +14,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="MAP"
+        android:textColor="@color/white"
+        android:typeface="monospace"
         app:layout_constraintBottom_toTopOf="@+id/mapB"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.139"
+        app:layout_constraintHorizontal_bias="0.137"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.863" />
 
     <ToggleButton
         android:id="@+id/mapB"
@@ -39,10 +42,11 @@
         android:id="@+id/solutionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="48dp"
         android:text="SHOW SOLUTION"
+        android:textColor="@color/white"
+        android:typeface="monospace"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,8 +69,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="296dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="48dp"
         android:text="WALLS UP"
+        android:textColor="@color/white"
+        android:typeface="monospace"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -87,37 +93,42 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="128dp"
-        android:layout_height="35dp"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.226"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
         app:layout_constraintVertical_bias="0.05">
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:elegantTextHeight="true"
             android:gravity="center"
-            android:text="ZOOM" />
+            android:text="ZOOM"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:typeface="monospace" />
 
         <ImageButton
             android:id="@+id/zoomInB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/zoomin" />
 
         <ImageButton
             android:id="@+id/zoomOutB"
-            android:layout_width="41dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/zoomout" />
@@ -125,8 +136,8 @@
     </LinearLayout>
 
     <TableLayout
-        android:layout_width="187dp"
-        android:layout_height="120dp"
+        android:layout_width="250dp"
+        android:layout_height="176dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -4,15 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".gui.PlayAnimationActivity">
+    tools:context=".gui.PlayAnimationActivity"
+    android:background="@drawable/background3">
 
 
     <TextView
         android:id="@+id/mapText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="28dp"
         android:text="MAP"
+        android:textColor="@color/white"
         android:typeface="monospace"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.134"
@@ -39,8 +41,9 @@
         android:id="@+id/solutionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="28dp"
         android:text="SHOW SOLUTION"
+        android:textColor="@color/white"
         android:typeface="monospace"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,9 +68,10 @@
         android:id="@+id/wallsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="296dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="300dp"
+        android:layout_marginTop="28dp"
         android:text="WALLS UP"
+        android:textColor="@color/white"
         android:typeface="monospace"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -90,7 +94,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="150dp"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -102,16 +106,19 @@
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:elegantTextHeight="true"
             android:gravity="center"
+            android:textSize="20sp"
             android:text="@string/zoom"
+            android:textColor="@color/white"
             android:typeface="monospace" />
 
         <ImageButton
             android:id="@+id/zoomInB"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
@@ -120,7 +127,8 @@
 
         <ImageButton
             android:id="@+id/zoomOutB"
-            android:layout_width="41dp"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
@@ -151,6 +159,7 @@
         android:layout_marginTop="84dp"
         android:text="@string/remaining_energy"
         android:typeface="monospace"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.083"
@@ -169,7 +178,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.871" />
+        app:layout_constraintVertical_bias="0.857" />
 
     <Button
         android:id="@+id/toWinningB"
@@ -218,6 +227,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/sensorsText"
+            android:textSize="20sp"
+            android:textColor="@color/white"
             android:typeface="monospace" />
 
         <TableLayout
@@ -356,6 +367,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/speed"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -379,7 +392,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.68" />
+        app:layout_constraintGuide_begin="572dp" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier2"

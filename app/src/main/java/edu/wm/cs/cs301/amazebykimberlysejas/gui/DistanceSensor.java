@@ -1,6 +1,5 @@
 package edu.wm.cs.cs301.amazebykimberlysejas.gui;
 
-import android.graphics.Path;
 
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.CardinalDirection;
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.Maze;
@@ -94,7 +93,7 @@ public interface DistanceSensor {
 	 * @param mountedDirection is the sensor's relative direction
 	 * @throws IllegalArgumentException if parameter is null
 	 */
-	void setSensorDirection(Path.Direction mountedDirection);
+	void setSensorDirection(Robot.Direction mountedDirection);
 	
 	
 	/**

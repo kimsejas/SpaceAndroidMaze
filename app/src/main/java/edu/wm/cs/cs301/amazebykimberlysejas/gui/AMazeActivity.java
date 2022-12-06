@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -63,7 +64,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         explore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(AMazeActivity.this, "Explore button clicked! Going to new planet.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(AMazeActivity.this, "Explore button clicked! Going to new planet.", Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User clicked explore button");
                 mazeEditor = mazePreferences.edit();
                 mazeEditor.putString("planet", planetType);
@@ -95,7 +96,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
                 int lastPlanetSize = mazePreferences.getInt("size", 0);
                 boolean lastCratersChecked = mazePreferences.getBoolean("craters", false);
                 int lastSeed = mazePreferences.getInt("seed", 0);
-                Toast.makeText(AMazeActivity.this, "Revisit button clicked! Going to last planet." , Toast.LENGTH_SHORT).show();
+//                Toast.makeText(AMazeActivity.this, "Revisit button clicked! Going to last planet." , Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User clicked revisit button");
                 Log.v("maze", "Last planet chosen. Planet type: " + lastPlanet + ", Planet Size: "+ lastPlanetSize + ", Craters Checked: "+ lastCratersChecked +", Seed: "+ lastSeed);
                 Intent i = new Intent(AMazeActivity.this, GeneratingActivity.class);
@@ -115,10 +116,12 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
      */
     private void spinnerPlanetSelection(){
         spinner = findViewById(R.id.titleSpinner);
+        View v = spinner.getSelectedView();
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.algos, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+
     }
 
     /**
@@ -134,7 +137,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 planetSizeNum = progress;
                 planetSizeText.setText("Planet Size:"+ progress);
-                Toast.makeText(AMazeActivity.this, "Chosen Planet Size:  " + progress, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(AMazeActivity.this, "Chosen Planet Size:  " + progress, Toast.LENGTH_SHORT).show();
                 Log.v("skillBarProgress", "User chose a planet size of:  " + progress);
 
             }
@@ -162,13 +165,13 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
             public void onClick(View view) {
                 if (cratersChecked.isChecked()){
                     cratersChecked.setChecked(true);
-                    Toast.makeText(AMazeActivity.this, "Craters mode on", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(AMazeActivity.this, "Craters mode on", Toast.LENGTH_SHORT).show();
                     Log.v("switch", "User checked craters " );
 
                 }
                 else{
                     cratersChecked.setChecked(false);
-                    Toast.makeText(AMazeActivity.this, "Craters mode off", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(AMazeActivity.this, "Craters mode off", Toast.LENGTH_SHORT).show();
                     Log.v("switch", "User unchecked craters " );
 
                 }
@@ -179,13 +182,11 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         planetType = adapterView.getItemAtPosition(i).toString();
-        Toast.makeText(AMazeActivity.this, "Selected Planet: " + planetType, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(AMazeActivity.this, "Selected Planet: " + planetType, Toast.LENGTH_SHORT).show();
         Log.v("itemSelected", "User selected " + planetType + " planet");
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
-
     }
 }

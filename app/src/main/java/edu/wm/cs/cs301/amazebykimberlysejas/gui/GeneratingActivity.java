@@ -110,7 +110,7 @@ public class GeneratingActivity extends AppCompatActivity {
                             Toast.makeText(GeneratingActivity.this, "Please select Rover type", Toast.LENGTH_SHORT).show();
                         }
                         else if (playManuallySelected){
-                            Toast.makeText(GeneratingActivity.this, "Rover is ready. Game will begin soon!", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(GeneratingActivity.this, "Rover is ready. Game will begin soon!", Toast.LENGTH_SHORT).show();
                             Intent i = new Intent(GeneratingActivity.this, PlayManuallyActivity.class);
                             startActivity(i);
                             finish();
@@ -120,7 +120,7 @@ public class GeneratingActivity extends AppCompatActivity {
                                 Toast.makeText(GeneratingActivity.this, "Please select Rover condition", Toast.LENGTH_SHORT).show();
                             }
                             else{
-                                Toast.makeText(GeneratingActivity.this, "Rover is ready. Game will begin soon!", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(GeneratingActivity.this, "Rover is ready. Game will begin soon!", Toast.LENGTH_SHORT).show();
                                 Intent i = new Intent(GeneratingActivity.this, PlayAnimationActivity.class);
                                 startActivity(i);
                                 finish();
@@ -174,7 +174,7 @@ public class GeneratingActivity extends AppCompatActivity {
     public void checkButton(View v) {
         int radioId = roverTypeGroup.getCheckedRadioButtonId();
         RadioButton roverTypeButton = findViewById(radioId);
-        Toast.makeText(GeneratingActivity.this, "Selected Rover Type: " + roverTypeButton.getText(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(GeneratingActivity.this, "Selected Rover Type: " + roverTypeButton.getText(), Toast.LENGTH_SHORT).show();
         Log.v("buttonSelected", "User selected " + roverTypeButton.getText() + " rover type");
 
         if (roverTypeButton.getId() == R.id.wizardB || roverTypeButton.getId() == R.id.wallfollowerB){
@@ -197,7 +197,7 @@ public class GeneratingActivity extends AppCompatActivity {
                     Toast.makeText(GeneratingActivity.this, "Please select Rover condition", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(GeneratingActivity.this, "Rover is ready. Game will begin soon!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(GeneratingActivity.this, "Rover is ready. Game will begin soon!", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(GeneratingActivity.this, PlayAnimationActivity.class);
                     startActivity(i);
                     finish();
@@ -216,12 +216,12 @@ public class GeneratingActivity extends AppCompatActivity {
         int radioId = conditionGroup.getCheckedRadioButtonId();
         RadioButton conditionButton = findViewById(radioId);
 
-        Toast.makeText(GeneratingActivity.this, "Selected Rover Condition: " + conditionButton.getText(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(GeneratingActivity.this, "Selected Rover Condition: " + conditionButton.getText(), Toast.LENGTH_SHORT).show();
         Log.v("buttonSelected", "User selected " + conditionButton.getText() + " rover condition");
 
         if (threadFinished){
             if (playAnimationSelected){
-                Toast.makeText(GeneratingActivity.this, "Rover is ready. Game will begin soon!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(GeneratingActivity.this, "Rover is ready. Game will begin soon!", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(GeneratingActivity.this, PlayAnimationActivity.class);
                 startActivity(i);
             }
