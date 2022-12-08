@@ -93,19 +93,33 @@
         app:layout_constraintVertical_bias="0.343" />
 
     <TextView
+        android:id="@+id/conditionInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(for unreliable rover, WallFollower)"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toTopOf="@+id/conditionGroup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
         android:id="@+id/conditionText"
         android:layout_width="wrap_content"
-        android:textColor="@color/white"
         android:layout_height="wrap_content"
         android:text="@string/choose_rover_condition"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:typeface="monospace"
         app:layout_constraintBottom_toTopOf="@+id/conditionGroup"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.984" />
+        app:layout_constraintVertical_bias="0.967" />
 
     <RadioGroup
         android:id="@+id/conditionGroup"

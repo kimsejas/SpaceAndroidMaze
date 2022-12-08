@@ -63,7 +63,7 @@ public class UnreliableSensor extends ReliableSensor implements DistanceSensor, 
 		int curX = currentPosition[0];
 		int curY = currentPosition[1];
 
-		sensorCd  = getSensorDxDyDirection(curDx, curDy);
+//		sensorCd  = getSensorDxDyDirection(curDx, curDy);
 		boolean obstacleFound = false;
 		int stepsTaken = 0;
 		if (sensorCd == CardinalDirection.North) {
@@ -83,7 +83,7 @@ public class UnreliableSensor extends ReliableSensor implements DistanceSensor, 
 		else if (sensorCd == CardinalDirection.South) {
 			obstacleFound = Maze.hasWall(curX, curY, sensorCd);
 			while (!obstacleFound) {
-				if (curY+1 > Maze.getHeight()) {
+				if (curY+1 >= Maze.getHeight()) {
 					return Integer.MAX_VALUE;
 				}
 				else {
@@ -97,7 +97,7 @@ public class UnreliableSensor extends ReliableSensor implements DistanceSensor, 
 		else if (sensorCd == CardinalDirection.East) {
 			obstacleFound = Maze.hasWall(curX, curY, sensorCd);
 			while (!obstacleFound ) {
-				if (curX+1 > Maze.getWidth()) {
+				if (curX+1 >= Maze.getWidth()) {
 					return Integer.MAX_VALUE;
 				}
 				else {

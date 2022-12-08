@@ -4,32 +4,43 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 import edu.wm.cs.cs301.amazebykimberlysejas.R;
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.CardinalDirection;
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.Floorplan;
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.Maze;
+import edu.wm.cs.cs301.amazebykimberlysejas.generation.ReliableRobot;
+import edu.wm.cs.cs301.amazebykimberlysejas.generation.ReliableSensor;
+import edu.wm.cs.cs301.amazebykimberlysejas.generation.WallFollower;
+import edu.wm.cs.cs301.amazebykimberlysejas.generation.Wizard;
 
 public class PlayAnimationActivity extends AppCompatActivity {
     private ToggleButton map;
     private ToggleButton solution;
     private ToggleButton walls;
-    private Maze maze;
+    public static Maze maze;
 
     private ImageButton playPause;
-    private boolean onPlay = false;
+    public boolean onPlay = true;
 
     private SeekBar speedBar;
     private TextView speedBarText;
-    private Integer curSpeed;
+    private long curSpeed = 1;
 
     private int pathLength = 0;
     private FirstPersonView firstPersonView;
@@ -45,6 +56,19 @@ public class PlayAnimationActivity extends AppCompatActivity {
     Floorplan seenCells;
     boolean started;
 
+    RobotDriver robotDriver;
+    ReliableRobot robot;
+    DistanceSensor sensor;
+    private Handler handler;
+    boolean robotFailed = false;
+
+    private ProgressBar energyBar;
+    private TextView energyText;
+
+    private Object pauseLock;
+
+    //TODO create public object for condition
+
 
 
 
@@ -58,17 +82,24 @@ public class PlayAnimationActivity extends AppCompatActivity {
         wallsButton();
         zoomInClick();
         zoomOutClick();
-        playPauseClick();
-        toWinningClick();
-        toLosingClick();
         speedBarSlider();
         setMaze();
         setPanel();
+        setRobot();
+        energyBar();
+        playPauseClick();
         start(panel);
-
-
+        handler = new Handler(Looper.getMainLooper());
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        driverAnimation();
+    }
+
+
     /**
      * Provides the maze to play.
      */
@@ -84,6 +115,31 @@ public class PlayAnimationActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Sets robot for game
+     */
+    public void setRobot(){
+        Intent i = getIntent();
+        String roverType = i.getStringExtra("Robot");
+        if (Objects.equals(roverType, "Wallfollower")){
+            robotDriver = new WallFollower(); //TODO change
+            robot = new ReliableRobot();
+            robot.setMaze(maze);
+            sensor = new ReliableSensor(); //TODO change
+            sensor.setMaze(maze);
+            robotDriver.setMaze(maze);
+            robotDriver.setRobot(robot);
+        }else if (Objects.equals(roverType, "Wizard")){
+            robotDriver = new Wizard();
+            robot = new ReliableRobot();
+            robot.setMaze(maze);
+            sensor = new ReliableSensor();
+            sensor.setMaze(maze);
+            robotDriver.setMaze(maze);
+            robotDriver.setRobot(robot);
+        }
+    }
+
 
 
     /**
@@ -94,7 +150,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(PlayAnimationActivity.this, "Map mode: "+ map.getText(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PlayAnimationActivity.this, "Map mode: "+ map.getText(), Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User toggled map mode " +  map.getText());
                 draw(cd.angle(), 0);
             }
@@ -109,7 +165,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
         solution.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(PlayAnimationActivity.this, "Show Solution mode: "+ solution.getText(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PlayAnimationActivity.this, "Show Solution mode: "+ solution.getText(), Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User toggled show solution mode " +  solution.getText());
                 draw(cd.angle(), 0);
             }
@@ -125,16 +181,8 @@ public class PlayAnimationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showMaze = walls.isChecked();
-                Toast.makeText(PlayAnimationActivity.this, "Walls Up: "+ walls.getText(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PlayAnimationActivity.this, "Walls Up: "+ walls.getText(), Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User toggled walls up mode " +  walls.getText());
-                if (showMaze) {
-                    draw(cd.angle(), 0);
-                }else{
-                    Log.v("walls up", " show maze : " + showMaze);
-                    panel.addBackground(maze.getPercentageForDistanceToExit(px, py));
-                    panel.commit();
-                }
-
             }
         });
     }
@@ -147,7 +195,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
         zoomIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(PlayAnimationActivity.this, "Zoomed in +", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PlayAnimationActivity.this, "Zoomed in +", Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User zoomed in ");
                 mapView.incrementMapScale();
                 draw(cd.angle(), 0) ;
@@ -164,7 +212,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
         zoomOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(PlayAnimationActivity.this, "Zoomed out -", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PlayAnimationActivity.this, "Zoomed out -", Toast.LENGTH_SHORT).show();
                 Log.v("buttonClicked", "User zoomed out ");
                 mapView.decrementMapScale();
                 draw(cd.angle(), 0) ;
@@ -174,67 +222,164 @@ public class PlayAnimationActivity extends AppCompatActivity {
     }
 
     /**
-    Switches between playing and pausing animation by updating image
+    Switches between playing and pausing animation by updating image button
      */
     private void playPauseClick(){
         playPause = (ImageButton) findViewById(R.id.playPauseB);
         playPause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (onPlay){
-                    //animation is happening and user wants to pause animation
-                    playPause.setBackgroundResource(R.drawable.playbutton);
-                    Toast.makeText(PlayAnimationActivity.this, "Animation paused", Toast.LENGTH_SHORT).show();
-                    Log.v("buttonClicked", "User paused animation");
-                    onPlay = false;
+         @Override
+         public void onClick(View view) {
+             if (onPlay) {
+                 //animation is happening and user wants to pause animation
+                 playPause.setBackgroundResource(R.drawable.playbutton);
+//                 Toast.makeText(PlayAnimationActivity.this, "Animation paused", Toast.LENGTH_SHORT).show();
+                 Log.v("buttonClicked", "User paused animation");
+                 synchronized (pauseLock){
+                     onPlay = false;
 
-                }else{
-                    //animation is paused and user wants to start animation
-                    playPause.setBackgroundResource(R.drawable.pausebutton);
-                    Toast.makeText(PlayAnimationActivity.this, "Animation started", Toast.LENGTH_SHORT).show();
-                    Log.v("buttonClicked", "User started animation");
-                    onPlay = true;
+                 }
+
+             } else {
+                 //animation is paused and user wants to start animation
+                 playPause.setBackgroundResource(R.drawable.pausebutton);
+                 Log.v("buttonClicked", "User started animation");
+                 synchronized (pauseLock){
+                     onPlay = true;
+                     pauseLock.notifyAll();
+
+                 }
+
+             }
+         }
+     });
+    }
+
+
+    private void energyBar(){
+        energyBar = (ProgressBar) findViewById(R.id.energyBar);
+        energyText = (TextView) findViewById(R.id.energyText);
+
+    }
+
+
+
+    /**
+     * Begins robot driving to exit and update's maze panel (game screen)
+     */
+    private void driverAnimation(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                pauseLock = new Object();
+                boolean result = true;
+                while(result){
+                    try {
+                        Thread.sleep(50*(10-curSpeed));
+                        result = robotDriver.drive1Step2Exit();
+                        cd = robot.getCurrentDirection();
+                        px = robot.getCurrentPosition()[0];
+                        py = robot.getCurrentPosition()[1];
+                        logPosition();
+                    } catch (Exception Exception) {
+                        //robot crashed/died
+                        robotFailed = true;
+                        break;
+                    }
+                    synchronized (pauseLock){
+                        while(!onPlay){
+                            try {
+                                pauseLock.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (showMaze){
+                                draw(cd.angle(), 0);
+                            }
+                            else{
+                                panel.addBackground(maze.getPercentageForDistanceToExit(px, py));
+                                panel.commit();
+                            }
+                            energyBar.setProgress((int)robot.getBatteryLevel());
+                            energyText.setText("Remaining Energy: " + robot.getBatteryLevel());
+                        }
+                    });
                 }
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        if (robotFailed){
+                            Intent i = new Intent(PlayAnimationActivity.this, LosingActivity.class);
+                            i.putExtra("From", "Animation");
+                            i.putExtra("Pathlength", robot.getOdometerReading());
+                            i.putExtra("Battery used", 3500 - robot.getBatteryLevel());
+                            startActivity(i);
+                            finish();
+                        }else{
+                            Log.v("Game won", "Robot reached exit! Switch to winning");
+                            panel.addBackground(1);
+                            panel.commit();
+                            Intent i = new Intent(PlayAnimationActivity.this, WinningActivity.class);
+                            i.putExtra("From", "Animation");
+                            i.putExtra("Pathlength", robot.getOdometerReading()+1);
+                            i.putExtra("Battery used", 3500 - robot.getBatteryLevel());
+                            startActivity(i);
+                            finish();
+                        }
+                    }
+                });
+
             }
-        });
+        }).start();
 
     }
 
-    /**
-    Switches to WinningActivity when button is clicked
-     */
-    private void toWinningClick(){
-        Button toWinning = findViewById(R.id.toWinningB);
-        toWinning.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(PlayAnimationActivity.this, "To winning button clicked!", Toast.LENGTH_SHORT).show();
-                Log.v("buttonClicked", "User clicked to winning button, switch to winning");
-                Intent i = new Intent(PlayAnimationActivity.this, WinningActivity.class);
-                i.putExtra("From", "Animation");
-                startActivity(i);
-            }
-        });
+//    /**
+//    Switches to WinningActivity when button is clicked
+//     */
+//    private void toWinningClick(){
+//        Button toWinning = findViewById(R.id.toWinningB);
+//        toWinning.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                Toast.makeText(PlayAnimationActivity.this, "To winning button clicked!", Toast.LENGTH_SHORT).show();
+//                Log.v("buttonClicked", "User clicked to winning button, switch to winning");
+//                Intent i = new Intent(PlayAnimationActivity.this, WinningActivity.class);
+//                i.putExtra("From", "Animation");
+//                startActivity(i);
+//                finish();
+//            }
+//        });
+//
+//    }
 
-    }
-
-    /**
-    Switches to LosingActivity when button is clicked
-     */
-    private void toLosingClick(){
-        Button toLosing = findViewById(R.id.toLosingB);
-        toLosing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(PlayAnimationActivity.this, "To losing button clicked!", Toast.LENGTH_SHORT).show();
-                Log.v("buttonClicked", "User clicked to losing button, switch to losing");
-                Intent i = new Intent(PlayAnimationActivity.this, LosingActivity.class);
-                i.putExtra("From", "Animation");
-                startActivity(i);
-            }
-        });
-
-    }
+//    /**
+//    Switches to LosingActivity when button is clicked
+//     */
+//    private void toLosingClick(){
+//        Button toLosing = findViewById(R.id.toLosingB);
+//        toLosing.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                Toast.makeText(PlayAnimationActivity.this, "To losing button clicked!", Toast.LENGTH_SHORT).show();
+//                Log.v("buttonClicked", "User clicked to losing button, switch to losing");
+//                Intent i = new Intent(PlayAnimationActivity.this, LosingActivity.class);
+//                i.putExtra("From", "Animation");
+//                startActivity(i);
+//                finish();
+//            }
+//        });
+//
+//    }
 
 
     /**
@@ -246,14 +391,15 @@ public class PlayAnimationActivity extends AppCompatActivity {
         speedBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int speed, boolean b) {
-                curSpeed = speed;
+                curSpeed = (long)  speed ;
                 speedBarText.setText("Speed "+ speed +"x");
-                Toast.makeText(PlayAnimationActivity.this, "Current speed:  " + speed + "x", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PlayAnimationActivity.this, "Current speed:  " + speed + "x", Toast.LENGTH_SHORT).show();
                 Log.v("speedBar", "Speed bar at "+ speed+ " speed" );
 
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+
 
             }
 
@@ -305,7 +451,9 @@ public class PlayAnimationActivity extends AppCompatActivity {
     private void setPositionDirectionViewingDirection() {
         int[] start = maze.getStartingPosition() ;
         setCurrentPosition(start[0],start[1]) ;
+        robot.setCurrentPosition(start[0], start[1]);
         cd = CardinalDirection.East;
+        robot.setCurrentDirection(cd);
     }
 
     protected void setCurrentPosition(int x, int y) {
@@ -348,9 +496,45 @@ public class PlayAnimationActivity extends AppCompatActivity {
             mapView.draw(panel, px, py, angle, walkStep,
                     isInShowMazeMode(),isInShowSolutionMode()) ;
         }
+        else{
+            if (maze.isFacingDeadEnd(px, py, cd)) {
+//            System.out.println("Facing deadend, help by showing solution");
+                mapView.draw(panel, px, py, cd.angle(), 0, true, true) ;
+            }
+            else {
+                // draw compass rose
+                cr.setCurrentDirection(cd);
+                cr.paintComponent(panel);
+            }
+        }
         // update the screen with the buffer graphics
         panel.commit() ;
     }
+
+    /**
+     * Checks if the given position is outside the maze
+     * @param x coordinate of position
+     * @param y coordinate of position
+     * @return true if position is outside, false otherwise
+     */
+    private boolean isOutside(int x, int y) {
+        return !maze.isValidPosition(x, y) ;
+    }
+
+    /**
+     * Switches the controller to the final screen
+     * @param pathLength gives the length of the path
+     */
+    public void switchFromPlayingToFinal(int pathLength) {
+        Log.v("Game end", "Switching from playing to winning screen");
+//        Toast.makeText(PlayManuallyActivity.this, "Game ended. You win!", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(PlayAnimationActivity.this, WinningActivity.class);
+        i.putExtra("From", "Animation");
+        i.putExtra("Pathlength", robot.getOdometerReading());
+        startActivity(i);
+        finish();
+    }
+
 
     /**
      * Draw a visual cue to help the user unless the
@@ -391,6 +575,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
         // check if there is a wall in the way
         if (!wayIsClear(dir))
             return;
+        pathLength+=1;
         int walkStep = 0;
         // walkStep is a parameter of FirstPersonView.draw()
         // it is used there for scaling steps
@@ -411,6 +596,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
     /**
      * Performs a rotation with 4 intermediate views,
      * updates the screen and the internal direction
+     * 1 is left, -1 is right
      * @param dir for current direction, values are either 1 or -1
      */
     private synchronized void rotate(int dir) {
@@ -429,6 +615,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
         // update maze direction only after intermediate steps are done
         // because choice of direction values are more limited.
         cd = CardinalDirection.getDirection(angle);
+        robot.setCurrentDirection(cd);
         logPosition(); // debugging
         drawHintIfNecessary();
     }
@@ -436,7 +623,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
     /**
      * Draws and waits. Used to obtain a smooth appearance for rotate and move operations
      */
-    private void slowedDownRedraw(int angle, int walkStep) {
+    public void slowedDownRedraw(int angle, int walkStep) {
         Log.v("slowed down redraw", "Drawing intermediate figures: angle " + angle + ", walkStep " + walkStep);
         draw(angle, walkStep);
         try {
@@ -467,19 +654,11 @@ public class PlayAnimationActivity extends AppCompatActivity {
     private void logPosition() {
         int[] tmpDxDy = cd.getDxDyDirection();
         Log.v("Current Pos", "x=" + px + ",y="+ py+ ",cd=" + cd);
-        //LOGGER.fine("x="+px+",y="+py+",dx="+dx+",dy="+dy+",angle="+angle);
-    	/*
-        if (!deepdebug)
-            return;
-        dbg("x="+viewx/Constants.MAP_UNIT+" ("+
-                viewx+") y="+viewy/Constants.MAP_UNIT+" ("+viewy+") ang="+
-                angle+" dx="+dx+" dy="+dy+" "+viewdx+" "+viewdy);
-                */
     }
 
 
     /////////////////////// Get Methods ////////////////////////////////
-    protected int[] getCurrentPosition() {
+    public int[] getCurrentPosition() {
         int[] result = new int[2];
         result[0] = px;
         result[1] = py;

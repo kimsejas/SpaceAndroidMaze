@@ -44,18 +44,16 @@ public class ReliableSensor implements DistanceSensor {
 		}
 
 		if (currentPosition[0] < 0 || currentPosition[0] >= Maze.getWidth() || currentPosition[1] < 0 || currentPosition[1] >= Maze.getHeight()) {
-			throw new IllegalArgumentException("Current position out of range");
+			return Integer.MAX_VALUE;
 		}
 
 		powersupply[0] = powersupply[0]- getEnergyConsumptionForSensing();
 
-		int curDx = currentDirection.getDxDyDirection()[0];
-		int curDy = currentDirection.getDxDyDirection()[1];
-
 		int curX = currentPosition[0];
 		int curY = currentPosition[1];
 
-		sensorCd  = getSensorDxDyDirection(curDx, curDy);
+//		sensorCd  = getSensorDxDyDirection(curDx, curDy);
+		sensorCd = getSensorCd(currentDirection);
 		boolean obstacleFound = false;
 		int stepsTaken = 0;
 		if (sensorCd == CardinalDirection.North) {
@@ -75,7 +73,7 @@ public class ReliableSensor implements DistanceSensor {
 		else if (sensorCd == CardinalDirection.South) {
 			obstacleFound = Maze.hasWall(curX, curY, sensorCd);
 			while (!obstacleFound) {
-				if (curY+1 > Maze.getHeight()) {
+				if (curY+1 >= Maze.getHeight()) {
 					return Integer.MAX_VALUE;
 				}
 				else {
@@ -87,9 +85,9 @@ public class ReliableSensor implements DistanceSensor {
 			return stepsTaken;
 		}
 		else if (sensorCd == CardinalDirection.East) {
-			obstacleFound = Maze.hasWall(curX, curY, sensorCd);
-			while (!obstacleFound ) {
-				if (curX+1 > Maze.getWidth()) {
+			obstacleFound = Maze.hasWall(curX, curY, sensorCd); //false
+			while (!obstacleFound ) { //while obsstacle found is false
+				if (curX+1 >= Maze.getWidth()) {
 					return Integer.MAX_VALUE;
 				}
 				else {
@@ -133,27 +131,90 @@ public class ReliableSensor implements DistanceSensor {
 	 * backward case: negate both
 	 *
 	 */
-	protected CardinalDirection getSensorDxDyDirection(int curDx, int curDy) {
-		int[] result = new int[2];
-		if (sensor == Robot.Direction.FORWARD) {
-			return CardinalDirection.getDirection(curDx, curDy);
-		}
-		else if (sensor == Robot.Direction.BACKWARD) {
-			result[0] = curDx * -1;
-			result[1] = curDy * -1;
+//	protected CardinalDirection getSensorDxDyDirection(int curDx, int curDy) {
+//
+//		int[] result = new int[2];
+//		if (sensor == Robot.Direction.FORWARD) {
+//			return CardinalDirection.getDirection(curDx, curDy);
+//		}
+//		else if (sensor == Robot.Direction.BACKWARD) {
+//			result[0] = curDx * -1;
+//			result[1] = curDy * -1;
+//
+//		}
+//		else if (sensor == Robot.Direction.LEFT) {
+//			result[0] = curDy * -1;
+//			result[1] = curDx;
+//		}
+//		else if (sensor == Robot.Direction.RIGHT) {
+//			result[0] = curDy;
+//			result[1] = curDx * -1;
+//		}
+//
+//		return CardinalDirection.getDirection(result[0], result[1]);
+//
+//	}
 
-		}
-		else if (sensor == Robot.Direction.LEFT) {
-			result[0] = curDy * -1;
-			result[1] = curDx;
-		}
-		else if (sensor == Robot.Direction.RIGHT) {
-			result[0] = curDy;
-			result[1] = curDx * -1;
+	private CardinalDirection getSensorCd(CardinalDirection curCd){
+		if(curCd == CardinalDirection.South) {
+			if (sensor == Robot.Direction.FORWARD) {
+				return CardinalDirection.South;
+			}
+			if (sensor == Robot.Direction.BACKWARD) {
+				return CardinalDirection.North;
+			}
+			if (sensor == Robot.Direction.LEFT) {
+				return CardinalDirection.West;
+			}
+			if (sensor == Robot.Direction.RIGHT) {
+				return CardinalDirection.East;
+			}
 		}
 
-		return CardinalDirection.getDirection(result[0], result[1]);
-
+		//Current Direction facing North
+		if(curCd == CardinalDirection.North) {
+			if (sensor == Robot.Direction.FORWARD) {
+				return CardinalDirection.North;
+			}
+			if (sensor == Robot.Direction.BACKWARD) {
+				return CardinalDirection.South;
+			}
+			if (sensor == Robot.Direction.LEFT) {
+				return CardinalDirection.East;
+			}
+			if (sensor == Robot.Direction.RIGHT) {
+				return CardinalDirection.West;
+			}
+		}
+		if(curCd == CardinalDirection.East) {
+			if (sensor == Robot.Direction.FORWARD) {
+				return CardinalDirection.East;
+			}
+			if (sensor == Robot.Direction.BACKWARD) {
+				return CardinalDirection.West;
+			}
+			if (sensor == Robot.Direction.LEFT) {
+				return CardinalDirection.South;
+			}
+			if (sensor == Robot.Direction.RIGHT) {
+				return CardinalDirection.North;
+			}
+		}
+		if(curCd == CardinalDirection.West) {
+			if (sensor == Robot.Direction.FORWARD) {
+				return CardinalDirection.West;
+			}
+			if (sensor == Robot.Direction.BACKWARD) {
+				return CardinalDirection.East;
+			}
+			if (sensor == Robot.Direction.LEFT) {
+				return CardinalDirection.North;
+			}
+			if (sensor == Robot.Direction.RIGHT) {
+				return CardinalDirection.South;
+			}
+		}
+		return null;
 	}
 
 	@Override

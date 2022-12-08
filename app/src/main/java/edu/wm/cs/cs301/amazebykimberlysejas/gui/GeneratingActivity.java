@@ -2,22 +2,17 @@ package edu.wm.cs.cs301.amazebykimberlysejas.gui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.util.Log;
 
 import java.util.Objects;
 
@@ -38,8 +33,9 @@ public class GeneratingActivity extends AppCompatActivity {
     private final Handler mHandler = new Handler();
 
     public RadioGroup roverTypeGroup;
-
     private RadioGroup conditionGroup;
+    private String roverType;
+    private String condition;
 
     private Boolean threadFinished = false;
     private Boolean playManuallySelected = false;
@@ -58,6 +54,8 @@ public class GeneratingActivity extends AppCompatActivity {
         mazeGenerationProgressBar();
         roverTypeGroup = findViewById(R.id.radioGroup);
         conditionGroup = findViewById(R.id.conditionGroup);
+        roverTypeListener();
+        conditionListener();
     }
 
     @Override
@@ -112,6 +110,7 @@ public class GeneratingActivity extends AppCompatActivity {
                         else if (playManuallySelected){
 //                            Toast.makeText(GeneratingActivity.this, "Rover is ready. Game will begin soon!", Toast.LENGTH_SHORT).show();
                             Intent i = new Intent(GeneratingActivity.this, PlayManuallyActivity.class);
+                            Log.v("Play Type", "Manual" );
                             startActivity(i);
                             finish();
                         }
@@ -122,6 +121,10 @@ public class GeneratingActivity extends AppCompatActivity {
                             else{
 //                                Toast.makeText(GeneratingActivity.this, "Rover is ready. Game will begin soon!", Toast.LENGTH_SHORT).show();
                                 Intent i = new Intent(GeneratingActivity.this, PlayAnimationActivity.class);
+                                i.putExtra("Robot", roverType);
+                                i.putExtra("Condition", condition);
+                                Log.v("Play Type", "Animation" );
+                                Log.v("Robot", "Robot Selected: " + roverType +", Condition: " + condition);
                                 startActivity(i);
                                 finish();
                             }
@@ -152,6 +155,7 @@ public class GeneratingActivity extends AppCompatActivity {
             builder = Order.Builder.Prim;
         }else if (Objects.equals(builderType, "BORUVKA")){
             builder = Order.Builder.DFS; // Boruvka implementation is not well done
+            Log.v("builder note", "user chose BORUVKA but implementation is not well done. DFS will be used");
         }
         order.setSkillLevel(builderSkillLevel);
         order.setBuilder(builder);
@@ -191,14 +195,19 @@ public class GeneratingActivity extends AppCompatActivity {
             if (playManuallySelected){
                 Intent i = new Intent(GeneratingActivity.this, PlayManuallyActivity.class);
                 startActivity(i);
+                Log.v("Play Type", "Manual" );
                 finish();
             } else if (playAnimationSelected){
-                if (conditionGroup.getCheckedRadioButtonId()  == -1){
+                if (conditionGroup.getCheckedRadioButtonId()  == -1 && roverTypeButton.getId() == R.id.wallfollowerB){
                     Toast.makeText(GeneratingActivity.this, "Please select Rover condition", Toast.LENGTH_SHORT).show();
                 }
                 else{
 //                    Toast.makeText(GeneratingActivity.this, "Rover is ready. Game will begin soon!", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(GeneratingActivity.this, PlayAnimationActivity.class);
+                    i.putExtra("Robot", roverType);
+                    i.putExtra("Condition", condition);
+                    Log.v("Play Type", "Animation" );
+                    Log.v("Robot", "Robot Selected: " + roverType +", Condition: " + condition);
                     startActivity(i);
                     finish();
                 }
@@ -223,10 +232,45 @@ public class GeneratingActivity extends AppCompatActivity {
             if (playAnimationSelected){
 //                Toast.makeText(GeneratingActivity.this, "Rover is ready. Game will begin soon!", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(GeneratingActivity.this, PlayAnimationActivity.class);
+                i.putExtra("Robot", roverType);
+                i.putExtra("Condition", condition);
+                Log.v("Play Type", "Animation" );
+                Log.v("Robot", "Robot Selected: " + roverType +", Condition: " + condition);
                 startActivity(i);
+                finish();
             }
         }
 
+
+    }
+
+
+    /**
+     * Click listener for when rover type changes
+     */
+    public void roverTypeListener() {
+        roverTypeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                RadioButton rb=(RadioButton) findViewById(checkedId);
+                roverType = rb.getText().toString();
+
+            }
+        });
+
+    }
+
+    /**
+     * Click listener for when condition of rover (sensor's reliability) changes
+     */
+    public void conditionListener() {
+        conditionGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                RadioButton rb=(RadioButton) findViewById(checkedId);
+                condition = rb.getText().toString();
+            }
+        });
 
     }
 

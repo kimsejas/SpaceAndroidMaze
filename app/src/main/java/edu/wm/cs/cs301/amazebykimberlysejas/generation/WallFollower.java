@@ -1,6 +1,10 @@
 package edu.wm.cs.cs301.amazebykimberlysejas.generation;
 
 
+import android.util.Log;
+
+import java.util.Arrays;
+
 import edu.wm.cs.cs301.amazebykimberlysejas.gui.DistanceSensor;
 import edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot;
 import edu.wm.cs.cs301.amazebykimberlysejas.gui.RobotDriver;
@@ -40,7 +44,7 @@ import edu.wm.cs.cs301.amazebykimberlysejas.gui.RobotDriver;
  * @author KIMBERLY SEJAS
  */
 public class WallFollower implements RobotDriver {
-	public static Robot robot;
+	public static Robot Robot;
 	public static Maze maze;
 	public static boolean foundExit = false;
 	public static boolean robotStopped = false;
@@ -61,15 +65,17 @@ public class WallFollower implements RobotDriver {
 	 */
 	@Override
 	public void setRobot(Robot r) {
-		robot = r;
-		robot.addDistanceSensor(left, Robot.Direction.LEFT);
-		robot.addDistanceSensor(right, Robot.Direction.RIGHT);
-		robot.addDistanceSensor(forward, Robot.Direction.FORWARD);
-		robot.addDistanceSensor(backward, Robot.Direction.BACKWARD);
+		Robot = r;
+		Robot.addDistanceSensor(left, edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Direction.LEFT);
+		Robot.addDistanceSensor(right, edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Direction.RIGHT);
+		Robot.addDistanceSensor(forward, edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Direction.FORWARD);
+		Robot.addDistanceSensor(backward, edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Direction.BACKWARD);
 
 
 
 	}
+
+
 
 	@Override
 	public void setMaze(Maze maze) {
@@ -106,58 +112,66 @@ public class WallFollower implements RobotDriver {
 
 		}
 		foundExit = true;
-		robot.move(1);
+		Robot.move(1);
 		return true;
 	}
 
 
 	@Override
 	public boolean drive1Step2Exit() throws Exception {
-		if (robot.hasStopped()) {
+		if (Robot.hasStopped()) {
 			robotStopped = true;
+			Log.v("Game over", "robot ran out of energy. losing screen");
 			throw new Exception("Robot stopped due to battery or crash");
 		}
 
-		if (facingExit()) {
+		if (atExit()) {
+			Log.v("reached exit line", "true.");
 			return false;
 		}
-		if (robot.distanceToObstacle(Robot.Direction.LEFT)==0) {
-			if (robot.distanceToObstacle(Robot.Direction.FORWARD)== 0){
-				robot.rotate(Robot.Turn.RIGHT);
+		if (Robot.distanceToObstacle(edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Direction.LEFT)==0) {
+			if (Robot.distanceToObstacle(edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Direction.FORWARD)== 0){
+				Robot.rotate(edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Turn.RIGHT);
+//				Log.v("Current Pos", "x=" + Robot.getCurrentPosition()[0] + ",y="+ Robot.getCurrentPosition()[1]+ ",cd=" + Robot.getCurrentDirection());
 			}
 			else {
-				robot.move(1);
+				Robot.move(1);
+//				Log.v("Current Pos", "x=" + Robot.getCurrentPosition()[0] + ",y="+ Robot.getCurrentPosition()[1]+ ",cd=" + Robot.getCurrentDirection());
 			}
 		}
 		else {
-			robot.rotate(Robot.Turn.LEFT);
-			robot.move(1);
-		}
+			Robot.rotate(edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Turn.LEFT);
+			Robot.move(1);
+//			Log.v("Current Pos", "x=" + Robot.getCurrentPosition()[0] + ",y="+ Robot.getCurrentPosition()[1]+ ",cd=" + Robot.getCurrentDirection());
 
+		}
 		return true;
 	}
 
 	/*
 	 * A private helper method for drive1Step2Exit() to determine when to stop by checking
-	 * if robot is at exit and facing it.
+	 * if robot is at exit
 	 */
-	public boolean facingExit() throws Exception, Exception {
+	public boolean atExit() throws Exception, Exception {
 		if (getEnergyConsumption() < 1) {
 			throw new Exception("Out of battery");
 		}
-		if (robot.isAtExit()) {
+
+		if (Arrays.equals(Robot.getCurrentPosition(), maze.getExitPosition())) {
 			try {
-				if (robot.distanceToObstacle(Robot.Direction.FORWARD) == Integer.MAX_VALUE) {
+				if (Robot.distanceToObstacle(edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Direction.LEFT) == Integer.MAX_VALUE) {
+					Robot.rotate(edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Turn.LEFT);
 					foundExit = true;
 					return true;
-
+				}
+				else if (Robot.distanceToObstacle(edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Direction.FORWARD) == Integer.MAX_VALUE){
+					foundExit = true;
+					return true;
 				}
 			}catch(Exception e){
 
-
 			}
-
-
+			return false;
 		}
 
 		return false;
@@ -166,13 +180,13 @@ public class WallFollower implements RobotDriver {
 
 	@Override
 	public float getEnergyConsumption() {
-		return robot.getBatteryLevel();
+		return Robot.getBatteryLevel();
 	}
 
 	@Override
 	public int getPathLength() {
 		// TODO Auto-generated method stub
-		return robot.getOdometerReading();
+		return Robot.getOdometerReading();
 	}
 
 }

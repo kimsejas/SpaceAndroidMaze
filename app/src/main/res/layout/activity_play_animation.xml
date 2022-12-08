@@ -152,7 +152,7 @@
         app:layout_constraintVertical_bias="0.593" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/energyText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/energyBar"
@@ -171,7 +171,7 @@
         android:id="@+id/playPauseB"
         android:layout_width="88dp"
         android:layout_height="91dp"
-        android:background="@drawable/playbutton"
+        android:background="@drawable/pausebutton"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -180,46 +180,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.857" />
 
-    <Button
-        android:id="@+id/toWinningB"
-        android:layout_width="87dp"
-        android:layout_height="60dp"
-        android:text="@string/to_winning"
-        android:textSize="11sp"
-        android:typeface="monospace"
-        app:backgroundTint="@color/cosmicPurple"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.97" />
-
-    <Button
-        android:id="@+id/toLosingB"
-        android:layout_width="87dp"
-        android:layout_height="60dp"
-        android:text="@string/to_losing"
-        android:textSize="11sp"
-        android:typeface="monospace"
-        app:backgroundTint="@color/cosmicPurple"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.048"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.97" />
 
     <LinearLayout
+        android:id="@+id/sensorDisplay"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/toWinningB"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.654"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toEndOf="@+id/linearLayout"
         app:layout_constraintTop_toTopOf="@+id/guideline2"
-        app:layout_constraintVertical_bias="0.2">
+        app:layout_constraintVertical_bias="0.06999999">
 
         <TextView
             android:id="@+id/sensorText"
@@ -227,8 +199,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/sensorsText"
-            android:textSize="20sp"
             android:textColor="@color/white"
+            android:textSize="20sp"
             android:typeface="monospace" />
 
         <TableLayout
@@ -327,6 +299,7 @@
         android:layout_width="160dp"
         android:layout_height="29dp"
         android:max="9"
+        android:progress="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.513"

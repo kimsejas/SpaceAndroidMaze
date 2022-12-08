@@ -34,17 +34,18 @@ public class LosingActivity extends AppCompatActivity {
     private void pathLengthDisplayed(){
         Intent i = getIntent();
         String prev = i.getStringExtra("From");
+        int pathlength = i.getIntExtra("Pathlength", 0);
 
         length = (TextView) findViewById(R.id.length);
         shortestLength = (TextView) findViewById(R.id.shortestlength);
 
 
         if (prev.equals("Animation")){
-            length.setText("Path length taken: 70");
-            shortestLength.setText("Shortest path length possible: 20000");
+            length.setText("Path length taken: " + pathlength);
+            shortestLength.setText("Initial distance to exit: " + GeneratingActivity.maze.getDistanceToExit(GeneratingActivity.maze.getStartingPosition()[0],GeneratingActivity.maze.getStartingPosition()[1]));
         }else if (prev.equals("Manual")){
-            length.setText("Path length taken: 100");
-            shortestLength.setText("Shortest path length possible: 20000");
+            length.setText("Path length taken: " + pathlength);
+            shortestLength.setText("Initial distance to exit: " + GeneratingActivity.maze.getDistanceToExit(GeneratingActivity.maze.getStartingPosition()[0],GeneratingActivity.maze.getStartingPosition()[1]));
         }
 
     }
@@ -58,7 +59,8 @@ public class LosingActivity extends AppCompatActivity {
         String prev = i.getStringExtra("From");
 
         if (prev.equals("Animation")){
-            energyConsumed.setText("Total Energy Consumed: 3500");
+            float energyUsed = i.getFloatExtra("Battery used", 3500);
+            energyConsumed.setText("Total Energy Used: " + energyUsed);
         }else if (prev.equals("Manual")){
             energyConsumed.setVisibility(View.INVISIBLE);
         }

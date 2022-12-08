@@ -43,11 +43,11 @@ public class WinningActivity extends AppCompatActivity {
         shortestLength = (TextView) findViewById(R.id.shortestlength);
 
         if (playType.equals("Animation")){
-            length.setText("Path length taken: 70");
-            shortestLength.setText("Shortest path length possible: 70");
+            length.setText("Path length taken: " + pathLength);
+            shortestLength.setText("Initial distance to exit: " + GeneratingActivity.maze.getDistanceToExit(GeneratingActivity.maze.getStartingPosition()[0],GeneratingActivity.maze.getStartingPosition()[1]));
         }else if (playType.equals("Manual")){
             length.setText("Path length taken: " + pathLength);
-            shortestLength.setText("Shortest path length possible: " + GeneratingActivity.maze.getDistanceToExit(GeneratingActivity.maze.getStartingPosition()[0],GeneratingActivity.maze.getStartingPosition()[1]));
+            shortestLength.setText("Initial distance to exit: " + GeneratingActivity.maze.getDistanceToExit(GeneratingActivity.maze.getStartingPosition()[0],GeneratingActivity.maze.getStartingPosition()[1]));
         }
 
     }
@@ -61,7 +61,8 @@ public class WinningActivity extends AppCompatActivity {
         String playType = i.getStringExtra("From");
 
         if (playType.equals("Animation")){
-            energyConsumed.setText("Total Energy Consumed: 1,500");
+            float energyUsed = i.getFloatExtra("Battery used", 3500);
+            energyConsumed.setText("Total Energy Used: " + energyUsed);
         }else if (playType.equals("Manual")){
             energyConsumed.setVisibility(View.INVISIBLE);
         }

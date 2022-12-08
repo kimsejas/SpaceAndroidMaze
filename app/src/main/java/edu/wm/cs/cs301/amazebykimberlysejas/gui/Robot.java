@@ -50,6 +50,7 @@ import edu.wm.cs.cs301.amazebykimberlysejas.generation.CardinalDirection;
  *
  */
 public interface Robot {
+
 	/**
 	 * Describes all possible turns that a robot can do when it rotates on the spot.
 	 * Left is 90 degrees left, right is 90 degrees right, turn around is 180 degrees.

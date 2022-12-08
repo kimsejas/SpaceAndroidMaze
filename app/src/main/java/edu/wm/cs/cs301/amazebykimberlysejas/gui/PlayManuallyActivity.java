@@ -127,7 +127,6 @@ public class PlayManuallyActivity extends AppCompatActivity {
                 if (showMaze) {
                     draw(cd.angle(), 0);
                 }else{
-                    Log.v("walls up", " show maze : " + showMaze);
                     panel.addBackground(maze.getPercentageForDistanceToExit(px, py));
                     panel.commit();
                 }
@@ -450,14 +449,6 @@ public class PlayManuallyActivity extends AppCompatActivity {
     private void logPosition() {
         int[] tmpDxDy = cd.getDxDyDirection();
         Log.v("Current Pos", "x=" + px + ",y="+ py+ ",cd=" + cd);
-        //LOGGER.fine("x="+px+",y="+py+",dx="+dx+",dy="+dy+",angle="+angle);
-    	/*
-        if (!deepdebug)
-            return;
-        dbg("x="+viewx/Constants.MAP_UNIT+" ("+
-                viewx+") y="+viewy/Constants.MAP_UNIT+" ("+viewy+") ang="+
-                angle+" dx="+dx+" dy="+dy+" "+viewdx+" "+viewdy);
-                */
     }
 
     /**
@@ -492,6 +483,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         result[1] = py;
         return result;
     }
+
     protected CardinalDirection getCurrentDirection() {
         return cd;
     }

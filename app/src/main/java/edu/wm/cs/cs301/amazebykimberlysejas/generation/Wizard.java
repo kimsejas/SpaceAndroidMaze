@@ -43,6 +43,7 @@ public class Wizard implements RobotDriver {
 
 	}
 
+
 	@Override
 	public void setMaze(Maze maze) {
 		Maze = maze;
@@ -114,7 +115,6 @@ public class Wizard implements RobotDriver {
 			else if (!Robot.hasStopped()){
 				Robot.move(1);
 				if (atExit()) {
-
 					return false;
 				}
 				return true;
@@ -128,27 +128,32 @@ public class Wizard implements RobotDriver {
 	 * A helper function for drive1Step2Exit that checks if robot has been driven to exit already in that case it rotates the robot
 	 * such that if faces the exit in its forward direction
 	 */
-	private boolean atExit() {
+	public boolean atExit() {
 		try {
 			if (Arrays.equals(Robot.getCurrentPosition(), Maze.getExitPosition())) {
-
-
-				if (Robot.canSeeThroughTheExitIntoEternity(Direction.FORWARD)) {
+				if (Robot.distanceToObstacle(edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Direction.FORWARD) == Integer.MAX_VALUE) {
+//					Robot.move(1);
+					foundExit = true;
 					return true;
 				}
-				Turn exitDirection = null;
-				if (Robot.canSeeThroughTheExitIntoEternity(Direction.LEFT)) {
-					exitDirection = Turn.LEFT;
+				if (Robot.distanceToObstacle(edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Direction.LEFT) == Integer.MAX_VALUE) {
+					foundExit = true;
+					Robot.rotate(Turn.LEFT);
+//					Robot.move(1);
+					return true;
 				}
-				if (Robot.canSeeThroughTheExitIntoEternity(Direction.RIGHT)) {
-					exitDirection = Turn.RIGHT;
+				if (Robot.distanceToObstacle(edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Direction.RIGHT) == Integer.MAX_VALUE) {
+					foundExit = true;
+					Robot.rotate(Turn.RIGHT);
+//					Robot.move(1);
+					return true;
 				}
-				if (Robot.canSeeThroughTheExitIntoEternity(Direction.BACKWARD)) {
-					exitDirection = Turn.AROUND;
+				if (Robot.distanceToObstacle(edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Direction.BACKWARD) == Integer.MAX_VALUE) {
+					foundExit = true;
+					Robot.rotate(Turn.AROUND);
+//					Robot.move(1);
+					return true;
 				}
-				Robot.rotate(exitDirection);
-				foundExit = true;
-				return true;
 			}
 			else {
 				return false;

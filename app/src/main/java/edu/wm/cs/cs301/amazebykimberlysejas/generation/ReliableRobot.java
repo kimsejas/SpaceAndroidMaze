@@ -1,7 +1,15 @@
 package edu.wm.cs.cs301.amazebykimberlysejas.generation;
 
+import android.util.Log;
+
+import edu.wm.cs.cs301.amazebykimberlysejas.gui.CompassRose;
+import edu.wm.cs.cs301.amazebykimberlysejas.gui.Constants;
 import edu.wm.cs.cs301.amazebykimberlysejas.gui.DistanceSensor;
+import edu.wm.cs.cs301.amazebykimberlysejas.gui.FirstPersonView;
+import edu.wm.cs.cs301.amazebykimberlysejas.gui.MazePanel;
+import edu.wm.cs.cs301.amazebykimberlysejas.gui.PlayAnimationActivity;
 import edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot;
+import edu.wm.cs.cs301.amazebykimberlysejas.gui.RobotDriver;
 
 /**
  * Class: ReliableRobot
@@ -16,14 +24,23 @@ import edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot;
 public class ReliableRobot implements Robot {
 //	Control control;
 	float energy = 3500;
-	int disTraveled;
+	int pathLength;
 	float[] powersupply = new float[1];
-	boolean hasStopped = false;
+	public boolean hasStopped = false;
 
 	DistanceSensor left;
 	DistanceSensor right;
 	DistanceSensor forward;
 	DistanceSensor backward;
+
+	int px;
+	int py;
+	CardinalDirection cd;
+	Maze Maze;
+
+	public void setMaze(Maze maze){
+		Maze = maze;
+	}
 
 
 
@@ -60,15 +77,24 @@ public class ReliableRobot implements Robot {
 
 
 	@Override
-	public int[] getCurrentPosition() throws Exception {
-//		return control.getCurrentPosition();
-        return null;
+	public int[] getCurrentPosition() {
+        return new int[] {px,py};
 	}
+
+	public void setCurrentPosition(int x, int y){
+		px = x;
+		py = y;
+	}
+
 
 	@Override
 	public CardinalDirection getCurrentDirection() {
 //		return control.getCurrentDirection();
-        return null;
+        return cd;
+	}
+
+	public void setCurrentDirection(CardinalDirection direction){
+		cd = direction;
 	}
 
 	@Override
@@ -93,12 +119,12 @@ public class ReliableRobot implements Robot {
 
 	@Override
 	public int getOdometerReading() {
-		return disTraveled;
+		return pathLength;
 	}
 
 	@Override
 	public void resetOdometer() {
-		disTraveled = 0;
+		pathLength = 0;
 	}
 
 
@@ -113,35 +139,63 @@ public class ReliableRobot implements Robot {
 			switch (turn) {
 
 			case LEFT:
-				if (getBatteryLevel() >= getEnergyForStepForward() && !hasStopped()) {
-//					control.handleKeyboardInput(UserInput.LEFT, (control.getMaze().getHeight())*(control.getMaze().getWidth()));
+				if (getBatteryLevel() >= 3 && !hasStopped()) {
+					rotateSteps(1);
 					setBatteryLevel(energy-3);
 					hasStopped();
+				}
+				else{
+					hasStopped = true;
 				}
 				break;
 
 			case RIGHT:
-				if (getBatteryLevel() >= getEnergyForStepForward()&& !hasStopped()) {
-//					control.handleKeyboardInput(UserInput.RIGHT, (control.getMaze().getHeight())*(control.getMaze().getWidth()));
+				if (getBatteryLevel() >= 3&& !hasStopped()) {
+					rotateSteps(-1);
 					setBatteryLevel(energy-3);
 					hasStopped();
+				}else{
+					hasStopped = true;
 				}
 
 				break;
 
 			case AROUND:
-				if (getBatteryLevel() >= getEnergyForStepForward()&& !hasStopped()) {
-//					control.handleKeyboardInput(UserInput.LEFT, (control.getMaze().getHeight())*(control.getMaze().getWidth()));
-//					control.handleKeyboardInput(UserInput.LEFT, (control.getMaze().getHeight())*(control.getMaze().getWidth()));
-					setBatteryLevel(energy-3);
+				if (getBatteryLevel() >= 6 && !hasStopped()) {
+					rotateSteps(1);
+					rotateSteps(1);
+					setBatteryLevel(energy-6);
 					hasStopped();
 				}
-				break;
-
+				else{
+					hasStopped = true;
+				}
 
 			}
 
 		}
+
+
+	/**
+	 * Rotate steps since there is no control.
+ 	 * @param dir direction. -1 is right. 1 is left
+	 */
+	public void rotateSteps(int dir){
+		final int originalAngle = cd.angle();//angle;
+		final int steps = 4;
+		int angle = originalAngle; // just in case for loop is skipped
+		for (int i = 0; i != steps; i++) {
+			// add 1/4 of 90 degrees per step
+			// if dir is -1 then subtract instead of addition
+			angle = originalAngle + dir*(90*(i+1))/steps;
+			angle = (angle+1800) % 360;
+			// draw method is called and uses angle field for direction
+			// information.
+		}
+		// update maze direction only after intermediate steps are done
+		// because choice of direction values are more limited.
+		cd = CardinalDirection.getDirection(angle);
+	}
 
 
 
@@ -156,16 +210,42 @@ public class ReliableRobot implements Robot {
 		if (distance < 0) {
 			throw new IllegalArgumentException("Negative distance not allowed");
 		}
-//		robotCrash(); //checking if robot is going to move into a wall
-		while (getBatteryLevel() >= getEnergyForStepForward() && distance != 0 ) {
-//			control.handleKeyboardInput(UserInput.UP, (control.getMaze().getHeight())*(control.getMaze().getWidth()));
+		if (getBatteryLevel() >= getEnergyForStepForward()){
+			walk(1);
 			setBatteryLevel(energy-getEnergyForStepForward());
-
-			distance -= 1;
-			disTraveled+=1;
+			pathLength+=1;
 			hasStopped();
+		}else{
+			hasStopped = true;
 		}
 	}
+
+	/**
+	 * Moves in the given direction with 4 intermediate steps,
+	 * updates the screen and the internal position
+	 * @param dir, only possible values are 1 (forward) and -1 (backward)
+	 */
+	private synchronized void walk(int dir) {
+		// check if there is a wall in the way
+//		if (!wayIsClear(dir))
+//			return;
+//		pathLength+=1;
+		int walkStep = 0;
+		// walkStep is a parameter of FirstPersonView.draw()
+		// it is used there for scaling steps
+		// so walkStep is implicitly used in slowedDownRedraw
+		// which triggers the draw operation in
+		// FirstPersonView and Map
+		for (int step = 0; step != 4; step++) {
+			walkStep += dir;
+		}
+		// update position to neighbor
+		int[] tmpDxDy = cd.getDxDyDirection();
+		setCurrentPosition(px + dir*tmpDxDy[0], py + dir*tmpDxDy[1]) ;
+	}
+
+
+
 
 
 	/**
@@ -180,6 +260,7 @@ public class ReliableRobot implements Robot {
 //	}
 
 
+	//TODO implement this
 	@Override
 	public void jump() {
 		// TODO Auto-generated method stub
@@ -218,47 +299,68 @@ public class ReliableRobot implements Robot {
 	 * Will call distanceToObstacle from ReliableSensor on one of the robot's sensors e.g. left or right.
 	 */
 	@Override
-	public int distanceToObstacle(Direction direction) {
+	public int distanceToObstacle(Direction direction) throws Exception {
+
 
 		powersupply[0] = energy;
+		if (direction == Direction.LEFT){
+			int dist =  left.distanceToObstacle(getCurrentPosition(), cd, powersupply);
+			energy = powersupply[0];
+			return dist;
+		}else if(direction == Direction.RIGHT){
+			int dist =  right.distanceToObstacle(getCurrentPosition(), cd, powersupply);
+			energy = powersupply[0];
+			return dist;
 
-		switch (direction) {
-		case LEFT:
-			try {
-				int dist =  left.distanceToObstacle(getCurrentPosition(), getCurrentDirection(), powersupply);
-				energy = powersupply[0];
-				return dist;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		}else if(direction == Direction.FORWARD){
+			int dist =  forward.distanceToObstacle(getCurrentPosition(), cd, powersupply);
+			energy = powersupply[0];
+			return dist;
 
-		case RIGHT:
-			try {
-				int dist = right.distanceToObstacle(getCurrentPosition(), getCurrentDirection(), powersupply);
-				energy = powersupply[0];
-				return dist;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		}else if(direction == Direction.BACKWARD){
+			int dist =  backward.distanceToObstacle(getCurrentPosition(), cd, powersupply);
+			energy = powersupply[0];
+			return dist;
 
-		case FORWARD:
-			try {
-				int dist = forward.distanceToObstacle(getCurrentPosition(), getCurrentDirection(), powersupply);
-				energy = powersupply[0];
-				return dist;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		case BACKWARD:
-			try {
-				int dist = backward.distanceToObstacle(getCurrentPosition(), getCurrentDirection(), powersupply);
-				energy = powersupply[0];
-				return dist;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 		}
+
+//		switch (direction) {
+//		case LEFT:
+//			try {
+//				int dist =  left.distanceToObstacle(getCurrentPosition(), cd, powersupply);
+//				energy = powersupply[0];
+//				return dist;
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//
+//		case RIGHT:
+//			try {
+//				int dist = right.distanceToObstacle(getCurrentPosition(), cd, powersupply);
+//				energy = powersupply[0];
+//				return dist;
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//
+//		case FORWARD:
+//			try {
+//				int dist = forward.distanceToObstacle(getCurrentPosition(), cd, powersupply);
+//				energy = powersupply[0];
+//				return dist;
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//
+//		case BACKWARD:
+//			try {
+//				int dist = backward.distanceToObstacle(getCurrentPosition(), cd, powersupply);
+//				energy = powersupply[0];
+//				return dist;
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
 		return 0;
 
 	}
@@ -274,7 +376,7 @@ public class ReliableRobot implements Robot {
 		switch (direction) {
 		case LEFT:
 			try {
-				if (left.distanceToObstacle(getCurrentPosition(), getCurrentDirection(), powersupply) == Integer.MAX_VALUE) {
+				if (left.distanceToObstacle(getCurrentPosition(), cd, powersupply) == Integer.MAX_VALUE) {
 					energy = powersupply[0];
 					return true;
 				}
@@ -287,7 +389,7 @@ public class ReliableRobot implements Robot {
 
 		case RIGHT:
 			try {
-				if (right.distanceToObstacle(getCurrentPosition(), getCurrentDirection(), powersupply) == Integer.MAX_VALUE) {
+				if (right.distanceToObstacle(getCurrentPosition(), cd, powersupply) == Integer.MAX_VALUE) {
 					energy = powersupply[0];
 					return true;
 				}
@@ -299,7 +401,7 @@ public class ReliableRobot implements Robot {
 
 		case FORWARD:
 			try {
-				if (forward.distanceToObstacle(getCurrentPosition(), getCurrentDirection(), powersupply) == Integer.MAX_VALUE) {
+				if (forward.distanceToObstacle(getCurrentPosition(), cd, powersupply) == Integer.MAX_VALUE) {
 					energy = powersupply[0];
 					return true;
 				}
@@ -311,7 +413,7 @@ public class ReliableRobot implements Robot {
 
 		case BACKWARD:
 			try {
-				if (backward.distanceToObstacle(getCurrentPosition(), getCurrentDirection(), powersupply) == Integer.MAX_VALUE) {
+				if (backward.distanceToObstacle(getCurrentPosition(), cd, powersupply) == Integer.MAX_VALUE) {
 					energy = powersupply[0];
 					return true;
 				}
