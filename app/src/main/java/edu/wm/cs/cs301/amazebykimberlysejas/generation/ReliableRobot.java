@@ -6,6 +6,7 @@ import edu.wm.cs.cs301.amazebykimberlysejas.gui.CompassRose;
 import edu.wm.cs.cs301.amazebykimberlysejas.gui.Constants;
 import edu.wm.cs.cs301.amazebykimberlysejas.gui.DistanceSensor;
 import edu.wm.cs.cs301.amazebykimberlysejas.gui.FirstPersonView;
+import edu.wm.cs.cs301.amazebykimberlysejas.gui.Map;
 import edu.wm.cs.cs301.amazebykimberlysejas.gui.MazePanel;
 import edu.wm.cs.cs301.amazebykimberlysejas.gui.PlayAnimationActivity;
 import edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot;
@@ -38,8 +39,31 @@ public class ReliableRobot implements Robot {
 	CardinalDirection cd;
 	Maze Maze;
 
-	public void setMaze(Maze maze){
-		Maze = maze;
+	MazePanel panel = PlayAnimationActivity.panel;
+
+
+	private FirstPersonView firstPersonView;
+	private CompassRose cr;
+	private Map mapView;
+
+	/**
+	 * Initializes the drawer for the first person view
+	 * and the map view and then draws the initial screen
+	 * for this state.
+	 */
+	@Override
+	public void startDrawer(Floorplan seenCells) {
+		cr = new CompassRose();
+		cr.setPositionAndSize(Constants.VIEW_WIDTH/2,
+				(int)(0.1*Constants.VIEW_HEIGHT),35);
+
+		firstPersonView = new FirstPersonView(Constants.VIEW_WIDTH,
+				Constants.VIEW_HEIGHT, Constants.MAP_UNIT,
+				Constants.STEP_SIZE, seenCells, Maze.getRootnode()) ;
+
+		mapView = new Map(seenCells, 25, Maze) ;
+		// draw the initial screen for this state
+		draw(cd.angle(), 0);
 	}
 
 
@@ -81,6 +105,13 @@ public class ReliableRobot implements Robot {
         return new int[] {px,py};
 	}
 
+	@Override
+	public void setMaze(edu.wm.cs.cs301.amazebykimberlysejas.generation.Maze maze) {
+		Maze = maze;
+
+	}
+
+	@Override
 	public void setCurrentPosition(int x, int y){
 		px = x;
 		py = y;
@@ -89,7 +120,6 @@ public class ReliableRobot implements Robot {
 
 	@Override
 	public CardinalDirection getCurrentDirection() {
-//		return control.getCurrentDirection();
         return cd;
 	}
 
@@ -189,13 +219,60 @@ public class ReliableRobot implements Robot {
 			// if dir is -1 then subtract instead of addition
 			angle = originalAngle + dir*(90*(i+1))/steps;
 			angle = (angle+1800) % 360;
+//			slowedDownRedraw(angle, 0);
 			// draw method is called and uses angle field for direction
 			// information.
+
 		}
+
+		// update the screen with the buffer graphics
 		// update maze direction only after intermediate steps are done
 		// because choice of direction values are more limited.
 		cd = CardinalDirection.getDirection(angle);
 	}
+
+	/**
+	 * Draws and waits. Used to obtain a smooth appearance for rotate and move operations
+	 */
+	public synchronized void slowedDownRedraw(int angle, int walkStep) {
+		Log.v("slowed down redraw", "Drawing intermediate figures: angle " + angle + ", walkStep " + walkStep);
+		draw(angle, walkStep);
+		try {
+			Thread.sleep(25);
+		} catch (Exception e) {
+//             may happen if thread is interrupted
+//             no reason to do anything about it, ignore exception
+		}
+	}
+
+	/**
+	 Draws the game screen by using a custom view maze panel
+	 */
+	private void draw(int angle, int walkStep) {
+		if (panel == null) {
+			Log.v("Error", "No panel for drawing during executing, dry-run game without graphics!");
+			return;
+		}
+		// draw the first person view and the map view if wanted
+		firstPersonView.draw(panel, px, py, walkStep, angle,
+				Maze.getPercentageForDistanceToExit(px, py)) ;
+//		if (isInMapMode()) {
+//			mapView.draw(panel, px, py, angle, walkStep,
+//					isInShowMazeMode(),isInShowSolutionMode()) ;
+//		}
+//		else{
+			if (Maze.isFacingDeadEnd(px, py, cd)) {
+//            System.out.println("Facing deadend, help by showing solution");
+				mapView.draw(panel, px, py, cd.angle(), 0, true, true) ;
+			}
+			else {
+				// draw compass rose
+				cr.setCurrentDirection(cd);
+				cr.paintComponent(panel);
+			}
+		panel.commit() ;
+		}
+		// update the screen with the buffer graphics
 
 
 
@@ -225,7 +302,7 @@ public class ReliableRobot implements Robot {
 	 * updates the screen and the internal position
 	 * @param dir, only possible values are 1 (forward) and -1 (backward)
 	 */
-	private synchronized void walk(int dir) {
+	public synchronized void walk(int dir) {
 		// check if there is a wall in the way
 //		if (!wayIsClear(dir))
 //			return;
@@ -238,6 +315,7 @@ public class ReliableRobot implements Robot {
 		// FirstPersonView and Map
 		for (int step = 0; step != 4; step++) {
 			walkStep += dir;
+//			slowedDownRedraw(cd.angle(), walkStep);
 		}
 		// update position to neighbor
 		int[] tmpDxDy = cd.getDxDyDirection();
@@ -423,6 +501,12 @@ public class ReliableRobot implements Robot {
 			energy = powersupply[0];
 			break;
 		}
+		return false;
+	}
+
+	@Override
+	public boolean getSensorOperational(Direction direction){
+		Log.v("test", "getsensoroperational should not reach here");
 		return false;
 	}
 

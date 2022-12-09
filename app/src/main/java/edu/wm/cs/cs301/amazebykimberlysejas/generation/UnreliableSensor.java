@@ -2,7 +2,10 @@ package edu.wm.cs.cs301.amazebykimberlysejas.generation;
 
 
 
+import android.util.Log;
+
 import edu.wm.cs.cs301.amazebykimberlysejas.gui.DistanceSensor;
+import edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot;
 
 /**
  * Class: UnreliableSensor
@@ -48,6 +51,7 @@ public class UnreliableSensor extends ReliableSensor implements DistanceSensor, 
 		}
 
 		if (sensor == null || operational == false) {
+			Log.v("test", "sensors are operational");
 			throw new UnsupportedOperationException("Sensor failure: sensor not operational");
 		}
 
@@ -64,6 +68,7 @@ public class UnreliableSensor extends ReliableSensor implements DistanceSensor, 
 		int curY = currentPosition[1];
 
 //		sensorCd  = getSensorDxDyDirection(curDx, curDy);
+		sensorCd = getSensorCd(currentDirection);
 		boolean obstacleFound = false;
 		int stepsTaken = 0;
 		if (sensorCd == CardinalDirection.North) {
@@ -128,6 +133,68 @@ public class UnreliableSensor extends ReliableSensor implements DistanceSensor, 
 		return stepsTaken;
 	}
 
+	private CardinalDirection getSensorCd(CardinalDirection curCd){
+		if(curCd == CardinalDirection.South) {
+			if (sensor == Robot.Direction.FORWARD) {
+				return CardinalDirection.South;
+			}
+			if (sensor == Robot.Direction.BACKWARD) {
+				return CardinalDirection.North;
+			}
+			if (sensor == Robot.Direction.LEFT) {
+				return CardinalDirection.West;
+			}
+			if (sensor == Robot.Direction.RIGHT) {
+				return CardinalDirection.East;
+			}
+		}
+
+		//Current Direction facing North
+		if(curCd == CardinalDirection.North) {
+			if (sensor == Robot.Direction.FORWARD) {
+				return CardinalDirection.North;
+			}
+			if (sensor == Robot.Direction.BACKWARD) {
+				return CardinalDirection.South;
+			}
+			if (sensor == Robot.Direction.LEFT) {
+				return CardinalDirection.East;
+			}
+			if (sensor == Robot.Direction.RIGHT) {
+				return CardinalDirection.West;
+			}
+		}
+		if(curCd == CardinalDirection.East) {
+			if (sensor == Robot.Direction.FORWARD) {
+				return CardinalDirection.East;
+			}
+			if (sensor == Robot.Direction.BACKWARD) {
+				return CardinalDirection.West;
+			}
+			if (sensor == Robot.Direction.LEFT) {
+				return CardinalDirection.South;
+			}
+			if (sensor == Robot.Direction.RIGHT) {
+				return CardinalDirection.North;
+			}
+		}
+		if(curCd == CardinalDirection.West) {
+			if (sensor == Robot.Direction.FORWARD) {
+				return CardinalDirection.West;
+			}
+			if (sensor == Robot.Direction.BACKWARD) {
+				return CardinalDirection.East;
+			}
+			if (sensor == Robot.Direction.LEFT) {
+				return CardinalDirection.North;
+			}
+			if (sensor == Robot.Direction.RIGHT) {
+				return CardinalDirection.South;
+			}
+		}
+		return null;
+	}
+
 
 	@Override
 	public void startFailureAndRepairProcess(int meanTimeBetweenFailures, int meanTimeToRepair)
@@ -186,7 +253,7 @@ public class UnreliableSensor extends ReliableSensor implements DistanceSensor, 
 	public void run() {
 
 			while (runningGame) {
-				startFailureAndRepairProcess(4, 2);
+				startFailureAndRepairProcess(4000, 2000);
 			}
 		}
 

@@ -2,6 +2,8 @@ package edu.wm.cs.cs301.amazebykimberlysejas.gui;
 
 
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.CardinalDirection;
+import edu.wm.cs.cs301.amazebykimberlysejas.generation.Floorplan;
+import edu.wm.cs.cs301.amazebykimberlysejas.generation.Maze;
 
 /**
  * This interface specifies methods to operate a robot that is inside
@@ -50,6 +52,14 @@ import edu.wm.cs.cs301.amazebykimberlysejas.generation.CardinalDirection;
  *
  */
 public interface Robot {
+
+    void setMaze(Maze maze);
+
+	void setCurrentPosition(int i, int i1);
+
+	void setCurrentDirection(CardinalDirection cd);
+
+	boolean getSensorOperational(Direction direction);
 
 	/**
 	 * Describes all possible turns that a robot can do when it rotates on the spot.
@@ -293,6 +303,7 @@ public interface Robot {
 	 * @param meanTimeBetweenFailures is the mean time in seconds, must be greater than zero
 	 * @param meanTimeToRepair is the mean time in seconds, must be greater than zero
 	 * @throws UnsupportedOperationException if method not supported
+	 *
 	 */
 	void startFailureAndRepairProcess(Direction direction, int meanTimeBetweenFailures, int meanTimeToRepair) throws UnsupportedOperationException;
 	/**
@@ -315,4 +326,7 @@ public interface Robot {
 	 * @throws UnsupportedOperationException if method not supported
 	 */
 	void stopFailureAndRepairProcess(Direction direction) throws UnsupportedOperationException;
+
+
+	void startDrawer(Floorplan seenCells);
 }

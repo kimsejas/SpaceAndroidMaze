@@ -190,14 +190,17 @@ public class MazePanel extends View implements P7PanelF22 {
         setColor(Color.GRAY);
         addFilledRectangle(0, 0, 800, 400);
 
-//        Bitmap fillBMPB = BitmapFactory.decodeResource(getResources(), R.drawable.planettexture);
-//        BitmapShader fillBMPshader = new BitmapShader(fillBMPB, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-//        paint.setStyle(Paint.Style.FILL);
-//        paint.setShader(fillBMPshader);
+        paint.setShader(null);
 
-//        setColor(ColorTheme.getColor(ColorTheme.MazeColors.BACKGROUND_BOTTOM,percentToExit).toArgb());
-        setColor(Color.BLACK);
+        Bitmap fillBMPB = BitmapFactory.decodeResource(getResources(), R.drawable.planettexture);
+        BitmapShader fillBMPshader = new BitmapShader(fillBMPB, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setShader(fillBMPshader);
+
+        setColor(ColorTheme.getColor(ColorTheme.MazeColors.BACKGROUND_BOTTOM,percentToExit).toArgb());
+//        setColor(Color.BLACK);
         addFilledRectangle(0, 400, 800, 400);
+        paint.setShader(null);
     }
 
     @Override
@@ -215,7 +218,7 @@ public class MazePanel extends View implements P7PanelF22 {
 //        BitmapShader fillBMPshader = new BitmapShader(fillBMP, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 //        paint.setStyle(Paint.Style.FILL);
 //        paint.setShader(fillBMPshader);
-        paint.setStyle(Paint.Style.FILL);
+//        paint.setStyle(Paint.Style.FILL);
         float moveToX = xPoints[0];
         float moveToY = yPoints[0];
         Path path = new Path();

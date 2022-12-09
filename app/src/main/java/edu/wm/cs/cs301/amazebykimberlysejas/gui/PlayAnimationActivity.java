@@ -3,6 +3,7 @@ package edu.wm.cs.cs301.amazebykimberlysejas.gui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -26,6 +28,8 @@ import edu.wm.cs.cs301.amazebykimberlysejas.generation.Floorplan;
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.Maze;
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.ReliableRobot;
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.ReliableSensor;
+import edu.wm.cs.cs301.amazebykimberlysejas.generation.UnreliableRobot;
+import edu.wm.cs.cs301.amazebykimberlysejas.generation.UnreliableSensor;
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.WallFollower;
 import edu.wm.cs.cs301.amazebykimberlysejas.generation.Wizard;
 
@@ -57,18 +61,24 @@ public class PlayAnimationActivity extends AppCompatActivity {
     boolean started;
 
     RobotDriver robotDriver;
-    ReliableRobot robot;
+    Robot robot;
     DistanceSensor sensor;
     private Handler handler;
     boolean robotFailed = false;
+    boolean unreliableRobot = false;
+    String condition;
 
     private ProgressBar energyBar;
     private TextView energyText;
 
     private Object pauseLock;
+    private ImageView forwardSensor;
+    private ImageView rightSensor;
+    private ImageView backwardSensor;
+    private ImageView leftSensor;
 
-    //TODO create public object for condition
-
+    boolean result = true;
+    MediaPlayer player;
 
 
 
@@ -83,6 +93,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
         zoomInClick();
         zoomOutClick();
         speedBarSlider();
+        setSensorDisplay();
         setMaze();
         setPanel();
         setRobot();
@@ -90,6 +101,12 @@ public class PlayAnimationActivity extends AppCompatActivity {
         playPauseClick();
         start(panel);
         handler = new Handler(Looper.getMainLooper());
+        if (unreliableRobot){
+            startSensors((UnreliableRobot) robot, condition);
+        }
+        player = MediaPlayer.create(this, R.raw.interstellar);
+        player.setLooping(true);
+        player.start();
 
     }
 
@@ -97,6 +114,13 @@ public class PlayAnimationActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         driverAnimation();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        player.stop();
+        player.release();
     }
 
 
@@ -115,20 +139,45 @@ public class PlayAnimationActivity extends AppCompatActivity {
     }
 
 
+    /*
+    Sets up the sensor display so that it can be updated if needed
+     */
+    public void setSensorDisplay(){
+        forwardSensor = findViewById(R.id.forwardSensor);
+        rightSensor = findViewById(R.id.rightSensor);
+        backwardSensor = findViewById(R.id.backwardsensor);
+        leftSensor = findViewById(R.id.leftSensor);
+    }
+
+
     /**
      * Sets robot for game
      */
     public void setRobot(){
         Intent i = getIntent();
         String roverType = i.getStringExtra("Robot");
+        condition = i.getStringExtra("Condition");
         if (Objects.equals(roverType, "Wallfollower")){
-            robotDriver = new WallFollower(); //TODO change
-            robot = new ReliableRobot();
-            robot.setMaze(maze);
-            sensor = new ReliableSensor(); //TODO change
-            sensor.setMaze(maze);
-            robotDriver.setMaze(maze);
-            robotDriver.setRobot(robot);
+            if (Objects.equals(condition, "Premium")){
+                robotDriver = new WallFollower(); //TODO change
+                robot = new ReliableRobot();
+                robot.setMaze(maze);
+                sensor = new ReliableSensor(); //TODO change
+                sensor.setMaze(maze);
+                robotDriver.setMaze(maze);
+                robotDriver.setRobot(robot);
+
+            }else{
+                robotDriver = new WallFollower();
+                robot = new UnreliableRobot();
+                robot.setMaze(maze);
+                sensor = new UnreliableSensor();
+                sensor.setMaze(maze);
+                robotDriver.setMaze(maze);
+                robotDriver.setRobot(robot);
+                unreliableRobot = true;
+
+            }
         }else if (Objects.equals(roverType, "Wizard")){
             robotDriver = new Wizard();
             robot = new ReliableRobot();
@@ -138,6 +187,108 @@ public class PlayAnimationActivity extends AppCompatActivity {
             robotDriver.setMaze(maze);
             robotDriver.setRobot(robot);
         }
+    }
+
+    /**
+     * Private helper method for setting the robot to start the sensor's failure and repair process based on the condition chosen
+     * @param condition (mediocre, soso, shaky)
+     * @param robot unreliable robot
+     */
+    private void startSensors(UnreliableRobot robot, String condition){
+//        boolean forward = true;
+//        boolean right = true;
+//        boolean backward = true;
+//        boolean left = true;
+        if (Objects.equals(condition, "Mediocre")){
+//            right = false;
+//            left = false;
+            robot.startFailureAndRepairProcess(Robot.Direction.LEFT,4000,2000);
+            try {
+                Thread.sleep(1300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            robot.startFailureAndRepairProcess(Robot.Direction.RIGHT,4000,2000);
+
+
+        }
+        else if (Objects.equals(condition, "Soso")){
+//            forward = false;
+//            backward = false;
+
+            robot.startFailureAndRepairProcess(Robot.Direction.FORWARD,4000,2000);
+            try {
+                Thread.sleep(1300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            robot.startFailureAndRepairProcess(Robot.Direction.BACKWARD,4000,2000);
+
+        }else if (Objects.equals(condition, "Shaky")){
+//            forward = false;
+//            right = false;
+//            backward = false;
+//            left = false;
+
+            robot.startFailureAndRepairProcess(Robot.Direction.LEFT,4000,2000);
+            try {
+                Thread.sleep(1300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            robot.startFailureAndRepairProcess(Robot.Direction.RIGHT, 4000, 2000);
+
+            try {
+                Thread.sleep(1300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            robot.startFailureAndRepairProcess(Robot.Direction.FORWARD, 4000, 2000);
+
+            try {
+                Thread.sleep(1300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            robot.startFailureAndRepairProcess(Robot.Direction.BACKWARD, 4000, 2);
+        }
+
+
+
+
+
+//        if (left == false){
+//            robot.startFailureAndRepairProcess(Robot.Direction.LEFT,4000,2000);
+//
+//        }
+//        if (right == false) {
+//            try {
+//                Thread.sleep(1300);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            robot.startFailureAndRepairProcess(Robot.Direction.RIGHT, 4000, 2000);
+//
+//        }
+//        if (forward== false) {
+//            try {
+//                Thread.sleep(1300);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            robot.startFailureAndRepairProcess(Robot.Direction.FORWARD, 4000, 2000);
+//
+//        }
+//        if (backward == false) {
+//            try {
+//                Thread.sleep(1300);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            robot.startFailureAndRepairProcess(Robot.Direction.BACKWARD, 4000, 2000);
+//
+//        }
+
     }
 
 
@@ -271,7 +422,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
             @Override
             public void run() {
                 pauseLock = new Object();
-                boolean result = true;
                 while(result){
                     try {
                         Thread.sleep(50*(10-curSpeed));
@@ -281,7 +431,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
                         py = robot.getCurrentPosition()[1];
                         logPosition();
                     } catch (Exception Exception) {
-                        //robot crashed/died
+//                        robot crashed/died
                         robotFailed = true;
                         break;
                     }
@@ -304,6 +454,12 @@ public class PlayAnimationActivity extends AppCompatActivity {
                                 panel.addBackground(maze.getPercentageForDistanceToExit(px, py));
                                 panel.commit();
                             }
+                            if (unreliableRobot){
+                                updateSensorDisplay(leftSensor,robot.getSensorOperational(Robot.Direction.LEFT) );
+                                updateSensorDisplay(rightSensor,robot.getSensorOperational(Robot.Direction.RIGHT) );
+                                updateSensorDisplay(forwardSensor,robot.getSensorOperational(Robot.Direction.FORWARD) );
+                                updateSensorDisplay(backwardSensor,robot.getSensorOperational(Robot.Direction.BACKWARD) );
+                            }
                             energyBar.setProgress((int)robot.getBatteryLevel());
                             energyText.setText("Remaining Energy: " + robot.getBatteryLevel());
                         }
@@ -312,6 +468,12 @@ public class PlayAnimationActivity extends AppCompatActivity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        if (unreliableRobot){
+                            robot.stopFailureAndRepairProcess(Robot.Direction.LEFT);
+                            robot.stopFailureAndRepairProcess(Robot.Direction.RIGHT);
+                            robot.stopFailureAndRepairProcess(Robot.Direction.FORWARD);
+                            robot.stopFailureAndRepairProcess(Robot.Direction.BACKWARD);
+                        }
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException e) {
@@ -343,43 +505,20 @@ public class PlayAnimationActivity extends AppCompatActivity {
 
     }
 
-//    /**
-//    Switches to WinningActivity when button is clicked
-//     */
-//    private void toWinningClick(){
-//        Button toWinning = findViewById(R.id.toWinningB);
-//        toWinning.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                Toast.makeText(PlayAnimationActivity.this, "To winning button clicked!", Toast.LENGTH_SHORT).show();
-//                Log.v("buttonClicked", "User clicked to winning button, switch to winning");
-//                Intent i = new Intent(PlayAnimationActivity.this, WinningActivity.class);
-//                i.putExtra("From", "Animation");
-//                startActivity(i);
-//                finish();
-//            }
-//        });
-//
-//    }
+    /**
+     * Private helper function to update the sensor display during gameplay. Only used if an unreliable robot is used.
+     * @param operationalState the current state of the sensor
+     * @param sensorView the sensor imageview that will be updated
+     */
+    private void updateSensorDisplay(ImageView sensorView, boolean operationalState){
+        if (operationalState){
+            sensorView.setImageResource(R.drawable.workingsensor);
+        }else{
+            sensorView.setImageResource(R.drawable.brokensensor);
+        }
 
-//    /**
-//    Switches to LosingActivity when button is clicked
-//     */
-//    private void toLosingClick(){
-//        Button toLosing = findViewById(R.id.toLosingB);
-//        toLosing.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                Toast.makeText(PlayAnimationActivity.this, "To losing button clicked!", Toast.LENGTH_SHORT).show();
-//                Log.v("buttonClicked", "User clicked to losing button, switch to losing");
-//                Intent i = new Intent(PlayAnimationActivity.this, LosingActivity.class);
-//                i.putExtra("From", "Animation");
-//                startActivity(i);
-//                finish();
-//            }
-//        });
-//
-//    }
+    }
+
 
 
     /**

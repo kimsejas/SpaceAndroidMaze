@@ -132,17 +132,17 @@ public class WallFollower implements RobotDriver {
 		if (Robot.distanceToObstacle(edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Direction.LEFT)==0) {
 			if (Robot.distanceToObstacle(edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Direction.FORWARD)== 0){
 				Robot.rotate(edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Turn.RIGHT);
-//				Log.v("Current Pos", "x=" + Robot.getCurrentPosition()[0] + ",y="+ Robot.getCurrentPosition()[1]+ ",cd=" + Robot.getCurrentDirection());
+				Log.v("turn right", "x=" + Robot.getCurrentPosition()[0] + ",y="+ Robot.getCurrentPosition()[1]+ ",cd=" + Robot.getCurrentDirection());
 			}
 			else {
 				Robot.move(1);
-//				Log.v("Current Pos", "x=" + Robot.getCurrentPosition()[0] + ",y="+ Robot.getCurrentPosition()[1]+ ",cd=" + Robot.getCurrentDirection());
+				Log.v("move 1", "x=" + Robot.getCurrentPosition()[0] + ",y="+ Robot.getCurrentPosition()[1]+ ",cd=" + Robot.getCurrentDirection());
 			}
 		}
 		else {
 			Robot.rotate(edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot.Turn.LEFT);
 			Robot.move(1);
-//			Log.v("Current Pos", "x=" + Robot.getCurrentPosition()[0] + ",y="+ Robot.getCurrentPosition()[1]+ ",cd=" + Robot.getCurrentDirection());
+			Log.v("rotateleft & move1", "x=" + Robot.getCurrentPosition()[0] + ",y="+ Robot.getCurrentPosition()[1]+ ",cd=" + Robot.getCurrentDirection());
 
 		}
 		return true;

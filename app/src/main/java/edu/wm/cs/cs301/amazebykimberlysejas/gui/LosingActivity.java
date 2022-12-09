@@ -3,6 +3,8 @@ package edu.wm.cs.cs301.amazebykimberlysejas.gui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaActionSound;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ public class LosingActivity extends AppCompatActivity {
     private TextView length;
     private TextView shortestLength;
     private TextView energyConsumed;
+    MediaPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,13 +23,26 @@ public class LosingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_losing);
         pathLengthDisplayed();
         energyDisplayed();
+
+        player = MediaPlayer.create(this, R.raw.pacmandeath);
+        player.setLooping(true);
+        player.start();
     }
 
     @Override
     public void onBackPressed(){
         Intent i = new Intent(LosingActivity.this, AMazeActivity.class);
         startActivity(i);
+        finish();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        player.stop();
+        player.release();
+    }
+
 
     /**
     Customizes the text views related to path length to gameplay

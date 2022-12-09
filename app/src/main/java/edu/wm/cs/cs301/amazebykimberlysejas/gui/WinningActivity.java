@@ -3,6 +3,7 @@ package edu.wm.cs.cs301.amazebykimberlysejas.gui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ public class WinningActivity extends AppCompatActivity {
     private TextView length;
     private TextView shortestLength;
     private TextView energyConsumed;
+    MediaPlayer player;
 
 
     @Override
@@ -22,6 +24,10 @@ public class WinningActivity extends AppCompatActivity {
         setContentView(R.layout.activity_winning);
         energyDisplayed();
         pathLengthDisplayed();
+
+        player = MediaPlayer.create(this, R.raw.misstherageinstrumental);
+        player.setLooping(true);
+        player.start();
     }
 
     @Override
@@ -29,6 +35,13 @@ public class WinningActivity extends AppCompatActivity {
         Intent i = new Intent(WinningActivity.this, AMazeActivity.class);
         startActivity(i);
         finish();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        player.stop();
+        player.release();
     }
 
 

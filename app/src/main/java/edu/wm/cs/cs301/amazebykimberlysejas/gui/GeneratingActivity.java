@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -46,6 +47,7 @@ public class GeneratingActivity extends AppCompatActivity {
     public static Maze maze;
 
 
+    MediaPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +58,26 @@ public class GeneratingActivity extends AppCompatActivity {
         conditionGroup = findViewById(R.id.conditionGroup);
         roverTypeListener();
         conditionListener();
+
+        player = MediaPlayer.create(this, R.raw.spaceshiplanding);
+        player.setLooping(true);
+        player.start();
     }
 
     @Override
     public void onBackPressed(){
         Intent i = new Intent(GeneratingActivity.this, AMazeActivity.class);
         startActivity(i);
+        player.stop();
     }
 
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        player.stop();
+        player.release();
+    }
 
     /**
      * Starts maze generation progress and updates progress bar.

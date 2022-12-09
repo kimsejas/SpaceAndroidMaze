@@ -1,6 +1,9 @@
 package edu.wm.cs.cs301.amazebykimberlysejas.generation;
 
+import android.util.Log;
+
 import edu.wm.cs.cs301.amazebykimberlysejas.gui.DistanceSensor;
+import edu.wm.cs.cs301.amazebykimberlysejas.gui.GeneratingActivity;
 import edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot;
 import edu.wm.cs.cs301.amazebykimberlysejas.gui.Robot;
 
@@ -54,13 +57,14 @@ public class UnreliableRobot extends ReliableRobot implements Robot {
 						energy = powersupply[0];
 						return dist;
 					} catch (Exception e1) {
-						rotateBack(workingSensorRotationMade);
-						System.out.println(state);
-						System.out.println(workingSensor.operational);
-						System.out.println("plan a did not work");
-						int dist = waitWorkingSensor(left);
-						System.out.println(dist);
-						return dist;
+
+//						rotateBack(workingSensorRotationMade);
+//						System.out.println(state);
+//						System.out.println(workingSensor.operational);
+//						System.out.println("plan a did not work");
+//						int dist = waitWorkingSensor(left);
+//						System.out.println(dist);
+//						return dist;
 
 					}
 				}
@@ -92,13 +96,13 @@ public class UnreliableRobot extends ReliableRobot implements Robot {
 						energy = powersupply[0];
 						return dist;
 					} catch (Exception e1) {
-						rotateBack(workingSensorRotationMade);
-						System.out.println(state);
-						System.out.println(workingSensor.operational);
-						System.out.println("plan a did not work");
-						int dist = waitWorkingSensor(forward);
-						System.out.println(dist);
-						return dist;
+//						rotateBack(workingSensorRotationMade);
+//						System.out.println(state);
+//						System.out.println(workingSensor.operational);
+//						System.out.println("plan a did not work");
+//						int dist = waitWorkingSensor(forward);
+//						System.out.println(dist);
+//						return dist;
 
 					}
 				}
@@ -244,7 +248,7 @@ public class UnreliableRobot extends ReliableRobot implements Robot {
 	public void addDistanceSensor(DistanceSensor sensor, Direction mountedDirection) {
 		if (sensor == left) {
 			UnreliableSensor left = new UnreliableSensor();
-//			left.setMaze(control.getMaze());
+			left.setMaze(GeneratingActivity.maze);
 			left.setSensorDirection(Direction.LEFT);
 			Thread leftThread = new Thread((Runnable) left);
 			this.left = left;
@@ -252,7 +256,7 @@ public class UnreliableRobot extends ReliableRobot implements Robot {
 		}
 		else if (sensor == right) {
 			UnreliableSensor right = new UnreliableSensor();
-//			right.setMaze(control.getMaze());
+			right.setMaze(GeneratingActivity.maze);
 			right.setSensorDirection(Direction.RIGHT);
 			Thread rightThread = new Thread((Runnable) right);
 			this.right = right;
@@ -260,7 +264,7 @@ public class UnreliableRobot extends ReliableRobot implements Robot {
 		}
 		else if (sensor == forward) {
 			UnreliableSensor forward = new UnreliableSensor();
-//			forward.setMaze(control.getMaze());
+			forward.setMaze(GeneratingActivity.maze);
 			forward.setSensorDirection(Direction.FORWARD);
 			Thread forwardThread = new Thread((Runnable) forward);
 			this.forward = forward;
@@ -269,7 +273,7 @@ public class UnreliableRobot extends ReliableRobot implements Robot {
 		}
 		else if (sensor== backward){
 			UnreliableSensor backward = new UnreliableSensor();
-//			backward.setMaze(control.getMaze());
+			backward.setMaze(GeneratingActivity.maze);
 			backward.setSensorDirection(Direction.BACKWARD);
 			Thread backwardThread = new Thread((Runnable) backward);
 			this.backward = backward;
@@ -292,7 +296,6 @@ public class UnreliableRobot extends ReliableRobot implements Robot {
 		}
 		if (direction == Direction.FORWARD) {
 			forwardThread.start();
-
 
 		}
 		if (direction == Direction.BACKWARD) {
@@ -384,6 +387,30 @@ public class UnreliableRobot extends ReliableRobot implements Robot {
 			energy = powersupply[0];
 			break;
 		}
+		return false;
+	}
+
+	@Override
+	public void setMaze(edu.wm.cs.cs301.amazebykimberlysejas.generation.Maze maze) {
+		Maze = maze;
+
+	}
+
+	@Override
+	public boolean getSensorOperational(Direction direction){
+		if (direction == Direction.FORWARD){
+			return forward.operational;
+		}else if (direction == Direction.RIGHT){
+			return right.operational;
+
+		}else if (direction == Direction.BACKWARD){
+			return forward.operational;
+
+		}else if (direction == Direction.LEFT){
+			return left.operational;
+
+		}
+		Log.v("test", "getsensoroperational should not reach here");
 		return false;
 	}
 

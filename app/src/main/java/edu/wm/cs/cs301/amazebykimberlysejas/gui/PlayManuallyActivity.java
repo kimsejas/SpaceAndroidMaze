@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -45,6 +46,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
     CardinalDirection cd;
     Floorplan seenCells;
     boolean started;
+    MediaPlayer player;
 
 
     @Override
@@ -64,6 +66,17 @@ public class PlayManuallyActivity extends AppCompatActivity {
         setMaze();
         setPanel();
         start(panel);
+        player = MediaPlayer.create(this, R.raw.interstellar);
+        player.setLooping(true);
+        player.start();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        player.stop();
+        player.release();
     }
 
     /**
