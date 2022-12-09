@@ -62,6 +62,7 @@ public class GeneratingActivity extends AppCompatActivity {
         player = MediaPlayer.create(this, R.raw.spaceshiplanding);
         player.setLooping(true);
         player.start();
+        
     }
 
     @Override
